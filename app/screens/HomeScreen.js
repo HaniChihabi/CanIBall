@@ -53,12 +53,51 @@ function HomeScreen({ navigation }) {
         }
     }, [city]);
 
-      
+    
+const getCircleStyle = (title, value) => {
+    let backgroundColor;
+
+    // Determine the circle color based on temperature
+    if (title === 'Temperature') {
+        const temp = parseFloat(value);
+        if (temp < 10) {
+            backgroundColor = 'red';
+        } else if (temp >= 10 && temp <= 17) {
+            backgroundColor = 'yellow';
+        } else {
+            backgroundColor = 'green';
+        }
+    }
+    // Determine the circle color based on wind speed
+    else if (title === 'Wind Speed') {
+        const speed = parseFloat(value);
+        if (speed < 3) {
+            backgroundColor = 'green';
+        } else if (speed >= 3 && speed <= 10) {
+            backgroundColor = 'yellow';
+        } else {
+            backgroundColor = 'red';
+        }
+    } else {
+        backgroundColor = '#34d399'; // Default color for other types
+    }
+
+    return {
+        width: 10,
+        height: 10,
+        borderRadius: 5,
+        backgroundColor: backgroundColor,
+        alignSelf: 'center',
+        marginTop: 10,
+    };
+};
+
+
+    
     
 
     const weatherInfo = weather ? [
         { title: 'Temperature', value: `${weather.main.temp} °C` },
-        { title: 'Humidity', value: `${weather.main.humidity}%` },
         { title: 'Wind Speed', value: `${weather.wind.speed} m/s` },
     ] : [];
 
@@ -74,7 +113,9 @@ function HomeScreen({ navigation }) {
                     <View key={index} style={getCardStyle(info.title === 'Temperature' ? parseFloat(info.value) : null)}>
                         <Text style={styles.cardTitle}>{info.title}</Text>
                         <Text style={styles.cardValue}>{info.value}</Text>
+                        <View style={getCircleStyle(info.title, info.value)}></View>
                     </View>
+                    
                 ))}
                 </View>
             )}
@@ -99,6 +140,8 @@ const styles = StyleSheet.create({
         bottom: 50
     },
     lottie: {
+        position: 'relative',
+        top: 15,
         width: '100%',
         height: '100%',
     },
@@ -115,14 +158,14 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         padding: 10,
         marginVertical: 0,
-        width: width / 3.5,  // Adjust width for three cards to fit in a row
-        height: 80,         // Smaller height
+        width: width / 2.6,  // Adjust width for three cards to fit in a row
+        height: 100,         // Smaller height
         position: 'relative',
         top: 50, // Adjust this value as needed
         },
 
     cardTitle: {
-        fontSize: 14,
+        fontSize: 18,
         fontWeight: 'bold',
         marginBottom:5
     },
@@ -146,6 +189,14 @@ const styles = StyleSheet.create({
         bottom: 90
 
         // Add more styling as needed
+    },
+    circle: {
+        width: 10,
+        height: 10,
+        borderRadius: 5,
+        backgroundColor: '#34d399', // or any color you prefer
+        alignSelf: 'center',
+        marginTop: 10,
     },
 });
 
