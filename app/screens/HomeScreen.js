@@ -29,12 +29,12 @@ function HomeScreen({ navigation }) {
         if (temperature < thresholdTemperature) {
             return {
                 ...styles.card,
-                backgroundColor: 'red',
+                backgroundColor: 'white',
             };
         } else {
             return {
                 ...styles.card,
-                backgroundColor: 'green',
+                backgroundColor: 'white',
             };
         }
     };
