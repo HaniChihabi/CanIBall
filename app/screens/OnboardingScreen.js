@@ -23,17 +23,28 @@ export default function OnboardingScreen() {
     { city: 'Hanover' },
   ];
 
-  const doneButton = ({ ...props }) => (
-    <TouchableOpacity style={styles.doneButton} {...props}>
-      <Text>Done</Text>
-    </TouchableOpacity>
-  );
+  useEffect(() => {
+    setSelected(people[0].city);
+}, []);
+
+const doneButton = ({ ...props }) => (
+  <TouchableOpacity style={styles.doneButton}
+  onPress={() => {
+    setItem('onboarded', '1');
+    // Pass the selected value to the Home screen and navigate to it
+    navigation.navigate('Home', { selectedCity: selected });
+  }} {...props}>
+    <Text>Done</Text>
+  </TouchableOpacity>
+);
+  console.log(selected);
 
   return (
     <View style={styles.container}>
       <Onboarding
-        onDone={() => navigation.navigate('Home')}
-        onSkip={() => navigation.navigate('Home')}
+        onDone={() => navigation.navigate('Home', { selected: selected })}
+        onSkip={() => navigation.navigate('Home', { selected: selected })}
+        
         DoneButtonComponent={doneButton}
         pages={[
           {
@@ -41,13 +52,15 @@ export default function OnboardingScreen() {
             image: (
                 <SafeAreaView style={styles.container1}>
                     <LottieView
-                        source={require('../assets/SpinAnimation.json')}
+                        source={require('../assets/ConfettiAnimation.json')}
                         autoPlay
                         loop
                         style={styles.lottie1}
                     />
                      <View style={styles.page1}>
-                    <Text style={styles.title}>Choose Your City!</Text>
+                    <Text style={styles.title}>Welcome to Can I Ball</Text>
+                    <Text style={styles.subtitle}>Let's see what the wather says!</Text>
+
                     </View>
               </SafeAreaView>
 
@@ -59,7 +72,7 @@ export default function OnboardingScreen() {
           {
             backgroundColor: 'lightgreen',
             image: (
-              <SafeAreaView style={styles.container1}>
+              <SafeAreaView style={styles.container2}>
                 <LottieView
                   source={require('../assets/CityAnimation.json')}
                   autoPlay
@@ -86,7 +99,7 @@ export default function OnboardingScreen() {
           {
             backgroundColor: '#a78bfa',
             image: (
-                <SafeAreaView style={styles.container1}>
+                <SafeAreaView style={styles.container3}>
                     <LottieView
                         source={require('../assets/AmigoAnimation.json')}
                         autoPlay
@@ -95,6 +108,7 @@ export default function OnboardingScreen() {
                     />
                     <View style={styles.page3}>
                       <Text style={styles.title}>Choose Your City!</Text>
+                      
                     </View>
               </SafeAreaView>
 
@@ -113,10 +127,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   },
+  // lotties
   lottie1: {
-    width: 400,
-    height: 300,
+    width: 200,
+    height: 200,
+    position: 'relative',
+    bottom: 40,
     alignSelf: 'center',
+    marginBottom: -130
   },
   lottie2: {
     width: 400,
@@ -127,6 +145,19 @@ const styles = StyleSheet.create({
     width: 400,
     height: 200,
     alignSelf: 'center',
+  },
+  // page-contents
+  page1:{
+    position: 'relative',
+    top:130
+  },
+  page2:{
+    position: 'relative',
+    top:100
+  },
+  page3:{
+    position: 'relative',
+    top:0
   },
   title: {
     fontSize: 32,
@@ -139,7 +170,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     textAlign: 'center',
     color: 'white',
-    marginTop: 10,
+    marginTop: 30,
   },
   doneButton: {
     padding: 20,
@@ -148,20 +179,9 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: '100%',
   },
   pickerStyle: {
-    marginTop: -20,
+    marginTop: -0,
     width: width * 0.8,
     alignSelf: 'center',
   },
-  page1:{
-    position: 'relative',
-    top:100
-  },
-  page2:{
-    position: 'relative',
-    top:100
-  },
-  page3:{
-    position: 'relative',
-    top:100
-  },
+  
 });

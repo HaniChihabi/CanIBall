@@ -2,27 +2,43 @@ import React, { useState, useEffect, Fragment } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import LottieView from 'lottie-react-native';
-import { useNavigation } from '@react-navigation/native';
 import fetchWeatherData from '../api/api'; // Adjust the path as necessary
-import { Picker } from '@react-native-picker/picker';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');
 
-const people = [
-    {city: 'Hannover' },
-    {city: 'Frankfurt' },
-    {city: 'Miami' },
-    {city: 'München' },
-  ];
-
-  const HomeScreen = () => {
-    const [selected, setSelected] = useState(null);
+function HomeScreen({ navigation }) {
+        const [selected, setSelected] = useState(null);
     const [weather, setWeather] = useState(null);
-    const navigation = useNavigation();
+    const route = useRoute()
+    const city = route.params?.selected;
+    console.log(city);
+
+    useEffect(() => {
+        setSelected(city);
+    }, [selected]);
+
 
     const initializeWeather = async () => {
             const data = await fetchWeatherData(selected, '294249189d29841b5a3b8791204c6411');
             setWeather(data);
+    };
+    const getCardStyle = (temperature) => {
+        // Define a threshold temperature (e.g., 10°C)
+        const thresholdTemperature = 10;
+
+        // Conditionally determine the background color based on temperature
+        if (temperature < thresholdTemperature) {
+            return {
+                ...styles.card,
+                backgroundColor: 'red',
+            };
+        } else {
+            return {
+                ...styles.card,
+                backgroundColor: 'green',
+            };
+        }
     };
     
     
@@ -34,8 +50,14 @@ const people = [
     }, [selected]);
 
     useEffect(() => {
-        setSelected(people[0].city);
-    }, []);
+        if (city) {
+            setSelected(city);
+            // You can also directly call your weather initialization here
+            initializeWeather();
+        }
+    }, [city]);
+
+      
     
 
     const weatherInfo = weather ? [
@@ -50,25 +72,18 @@ const people = [
                         <LottieView source={require('../assets/SpinAnimation.json')} autoPlay loop style={styles.lottie} />
                     </View>
 
-                    <Picker
-                                selectedValue={selected}
-                                onValueChange={(itemValue) => {setSelected(itemValue);}}
-                                style={styles.pickerStyle}>
-                                {people.map((City, index) => (
-                                    <Picker.Item key={index.toString()} label={City.city} value={City.city} />
-                                ))}
-                            </Picker>
+                   
 
-                            {weather && (
-                                <View style={styles.weatherInfoContainer}>
-                                    {weatherInfo.map((info, index) => (
-                                        <View key={index} style={styles.card}>
-                                            <Text style={styles.cardTitle}>{info.title}</Text>
-                                            <Text style={styles.cardValue}>{info.value}</Text>
-                                        </View>
-                                    ))}
-                                </View>
-                            )}
+                    {weather && (
+                <View style={styles.weatherInfoContainer}>
+                    {weatherInfo.map((info, index) => (
+                        <View key={index} style={getCardStyle(info.title === 'Temperature' ? parseFloat(info.value) : null)}>
+                            <Text style={styles.cardTitle}>{info.title}</Text>
+                            <Text style={styles.cardValue}>{info.value}</Text>
+                        </View>
+                    ))}
+                </View>
+            )}
 
                             <TouchableOpacity onPress={() => navigation.push('Onboarding')} style={styles.resetButton}>
                                 <Text>Reset</Text>
