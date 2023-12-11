@@ -1,14 +1,14 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import LottieView from 'lottie-react-native';
 import fetchWeatherData from '../api/api'; // Adjust the path as necessary
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');
 
 function HomeScreen({ navigation }) {
-        const [selected, setSelected] = useState(null);
+    const [selected, setSelected] = useState(null);
     const [weather, setWeather] = useState(null);
     const route = useRoute()
     const city = route.params?.selected;
@@ -24,10 +24,8 @@ function HomeScreen({ navigation }) {
             setWeather(data);
     };
     const getCardStyle = (temperature) => {
-        // Define a threshold temperature (e.g., 10°C)
         const thresholdTemperature = 10;
 
-        // Conditionally determine the background color based on temperature
         if (temperature < thresholdTemperature) {
             return {
                 ...styles.card,
@@ -41,8 +39,7 @@ function HomeScreen({ navigation }) {
         }
     };
     
-    
-
+    // one gotta go
     useEffect(() => {
         if (selected) {
             initializeWeather();
@@ -52,7 +49,6 @@ function HomeScreen({ navigation }) {
     useEffect(() => {
         if (city) {
             setSelected(city);
-            // You can also directly call your weather initialization here
             initializeWeather();
         }
     }, [city]);
@@ -68,26 +64,24 @@ function HomeScreen({ navigation }) {
 
     return (
         <SafeAreaView style={styles.container}>
-                    <View style={styles.lottieContainer}>
-                        <LottieView source={require('../assets/SpinAnimation.json')} autoPlay loop style={styles.lottie} />
+            <View style={styles.lottieContainer}>
+                <LottieView source={require('../assets/SpinAnimation.json')} autoPlay loop style={styles.lottie} />
+            </View>
+
+            {weather && (
+            <View style={styles.weatherInfoContainer}>
+                {weatherInfo.map((info, index) => (
+                    <View key={index} style={getCardStyle(info.title === 'Temperature' ? parseFloat(info.value) : null)}>
+                        <Text style={styles.cardTitle}>{info.title}</Text>
+                        <Text style={styles.cardValue}>{info.value}</Text>
                     </View>
-
-                   
-
-                    {weather && (
-                <View style={styles.weatherInfoContainer}>
-                    {weatherInfo.map((info, index) => (
-                        <View key={index} style={getCardStyle(info.title === 'Temperature' ? parseFloat(info.value) : null)}>
-                            <Text style={styles.cardTitle}>{info.title}</Text>
-                            <Text style={styles.cardValue}>{info.value}</Text>
-                        </View>
-                    ))}
+                ))}
                 </View>
             )}
 
-                            <TouchableOpacity onPress={() => navigation.push('Onboarding')} style={styles.resetButton}>
-                                <Text>Reset</Text>
-                            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.push('Onboarding')} style={styles.resetButton}>
+                <Text>Reset</Text>
+            </TouchableOpacity>
         </SafeAreaView>
     );
 };

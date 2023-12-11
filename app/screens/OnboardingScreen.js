@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, Dimensions, TouchableOpacity, SafeAreaView } fr
 import Onboarding from 'react-native-onboarding-swiper';
 import LottieView from 'lottie-react-native';
 import { useNavigation } from '@react-navigation/native';
-import { setItem } from '../utils/asyncStorage';
 import { Picker } from '@react-native-picker/picker';
 
 const { width } = Dimensions.get('window');
@@ -12,11 +11,7 @@ export default function OnboardingScreen() {
   const navigation = useNavigation();
   const [selected, setSelected] = useState('Hanover');
 
-  useEffect(() => {
-    setItem('onboarded', '1');
-  }, []);
-
-  const people = [
+  const City = [
     { city: 'Frankfurt' },
     { city: 'Miami' },
     { city: 'München' },
@@ -24,20 +19,17 @@ export default function OnboardingScreen() {
   ];
 
   useEffect(() => {
-    setSelected(people[0].city);
-}, []);
+    setSelected(City[0].city);
+  }, []);
 
-const doneButton = ({ ...props }) => (
-  <TouchableOpacity style={styles.doneButton}
-  onPress={() => {
-    setItem('onboarded', '1');
-    // Pass the selected value to the Home screen and navigate to it
-    navigation.navigate('Home', { selectedCity: selected });
-  }} {...props}>
-    <Text>Done</Text>
-  </TouchableOpacity>
-);
-  console.log(selected);
+  const doneButton = ({ ...props }) => (
+    <TouchableOpacity style={styles.doneButton}
+      onPress={() => {
+        navigation.navigate('Home', { selectedCity: selected });
+      }} {...props}>
+        <Text>Done</Text>
+    </TouchableOpacity>
+  );
 
   return (
     <View style={styles.container}>
@@ -86,7 +78,7 @@ const doneButton = ({ ...props }) => (
                   onValueChange={(itemValue) => setSelected(itemValue)}
                   style={styles.pickerStyle}
                 >
-                  {people.map((city, index) => (
+                  {City.map((city, index) => (
                     <Picker.Item key={index.toString()} label={city.city} value={city.city} />
                   ))}
                 </Picker>
