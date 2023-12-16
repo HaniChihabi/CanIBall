@@ -5,6 +5,7 @@ import LottieView from 'lottie-react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Picker } from '@react-native-picker/picker';
 
+
 const { width } = Dimensions.get('window');
 
 export default function OnboardingScreen() {
@@ -29,10 +30,10 @@ export default function OnboardingScreen() {
         { city: 'Miami' },
         { city: 'München' },
         { city: 'Hanover' },
-        { city: 'Frankfurt' },
-        { city: 'Miami' },
-        { city: 'München' },
-        { city: 'Hanover' },
+        { city: 'Los Angeles' },
+        { city: 'Houston' },
+        { city: 'Aleppo' },
+        { city: 'Madrid' },
         { city: 'Frankfurt' },
         { city: 'Miami' },
         { city: 'München' },
@@ -58,7 +59,6 @@ export default function OnboardingScreen() {
             <Onboarding
                 onDone={() => navigation.navigate('Home', { selected: selected })}
                 onSkip={() => navigation.navigate('Home', { selected: selected })}
-                DoneButtonComponent={doneButton}
                 pages={[
                     {
                         backgroundColor: 'turquoise',
@@ -84,12 +84,7 @@ export default function OnboardingScreen() {
                         backgroundColor: '#a78bfa',
                         image: (
                             <SafeAreaView style={styles.container3}>
-                                <LottieView
-                                    source={require('../assets/NewGlobeAnimation.json')}
-                                    autoPlay
-                                    loop
-                                    style={styles.lottie2}
-                                />
+                                
                                 <View style={styles.page2}>
                                     
                                 <Text style={styles.title}>Choose Your Language!</Text>
@@ -103,7 +98,12 @@ export default function OnboardingScreen() {
                                             <Picker.Item key={index.toString()} label={city.city} value={city.city} />
                                         ))}
                                     </Picker>
-                                    
+                                    <LottieView
+                                    source={require('../assets/NewLanguagesAnimation.json')}
+                                    autoPlay
+                                    loop
+                                    style={styles.lottie2}
+                                />
                                
                                 
                             </SafeAreaView>
@@ -115,12 +115,7 @@ export default function OnboardingScreen() {
                         backgroundColor: '#a78bfa',
                         image: (
                             <SafeAreaView style={styles.container2}>
-                                <LottieView
-                                    source={require('../assets/CityAnimation.json')}
-                                    autoPlay
-                                    loop
-                                    style={styles.lottie3}
-                                />
+                                
                                 <View style={styles.page3}>
                                   
                                 <Text style={styles.title}>Now Your City!</Text>
@@ -137,7 +132,12 @@ export default function OnboardingScreen() {
                                         />
                                     </View>
                                 </View>
-                                    
+                                   <LottieView
+                                    source={require('../assets/CityAnimation.json')}
+                                    autoPlay
+                                    loop
+                                    style={styles.lottie3}
+                                /> 
                                     
                             </SafeAreaView>
                         ),
@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 0,
     position: 'relative',
-    top:100
+    top:0
 },
   // lotties
   lottie1: {
@@ -175,17 +175,17 @@ const styles = StyleSheet.create({
   
   lottie2: {
     width: 400,
-    height: 300,
+    height: 200,
     alignSelf: 'center',
     position: 'relative',
-    top: 10,
+    top: 45,
   },
   lottie3: {
     width: 400,
     height: 300,
     alignSelf: 'center',
     position: 'relative',
-    bottom: 30,
+    top: 53,
   },
   // page-contents
   page1:{
@@ -194,14 +194,14 @@ const styles = StyleSheet.create({
   },
   page2:{
     position: 'relative',
-    top:0,
+    top: 10,
   },
   page3:{
     position: 'relative',
-    bottom: 90
+    bottom: 25
   },
   title: {
-    fontSize: 30,
+    fontSize: 40,
     textAlign: 'center',
     color: 'white',
     fontWeight: 'bold',
@@ -224,6 +224,8 @@ const styles = StyleSheet.create({
     marginTop: 50,
     width: width * 0.8,
     alignSelf: 'center',
+    position: 'relative',
+    top:60,
   },
   input: {
     width: '100%',
@@ -232,6 +234,8 @@ const styles = StyleSheet.create({
     borderColor: '#ddd',
     marginBottom: 20,
     borderRadius: 5,
+    position: 'relative',
+    top: 10,
 },
   
 });

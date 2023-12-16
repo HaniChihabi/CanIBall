@@ -17,29 +17,7 @@ function HomeScreen({ navigation }) {
     useEffect(() => {
         setSelected(city);
     }, [selected]);
-
-
-    const initializeWeather = async () => {
-            const data = await fetchWeatherData(selected, '294249189d29841b5a3b8791204c6411');
-            setWeather(data);
-    };
-    const getCardStyle = (temperature) => {
-        const thresholdTemperature = 10;
-
-        if (temperature < thresholdTemperature) {
-            return {
-                ...styles.card,
-                backgroundColor: 'white',
-            };
-        } else {
-            return {
-                ...styles.card,
-                backgroundColor: 'white',
-            };
-        }
-    };
     
-    // one gotta go
     useEffect(() => {
         if (selected) {
             initializeWeather();
@@ -53,53 +31,88 @@ function HomeScreen({ navigation }) {
         }
     }, [city]);
 
-    
-const getCircleStyle = (title, value) => {
-    let backgroundColor;
-
-    // Determine the circle color based on temperature
-    if (title === 'Temperature') {
-        const temp = parseFloat(value);
-        if (temp < 10) {
-            backgroundColor = 'red';
-        } else if (temp >= 10 && temp <= 17) {
-            backgroundColor = 'yellow';
-        } else {
-            backgroundColor = 'green';
-        }
-    }
-    // Determine the circle color based on wind speed
-    else if (title === 'Wind Speed') {
-        const speed = parseFloat(value);
-        if (speed < 3) {
-            backgroundColor = 'green';
-        } else if (speed >= 3 && speed <= 10) {
-            backgroundColor = 'yellow';
-        } else {
-            backgroundColor = 'red';
-        }
-    } else {
-        backgroundColor = '#34d399'; // Default color for other types
-    }
-
-    return {
-        width: 10,
-        height: 10,
-        borderRadius: 5,
-        backgroundColor: backgroundColor,
-        alignSelf: 'center',
-        marginTop: 10,
+    const initializeWeather = async () => {
+            const data = await fetchWeatherData(selected, '294249189d29841b5a3b8791204c6411');
+            setWeather(data);
     };
-};
 
+    useEffect(() => {
+        console.log("Selected city:", selected);  // Log the selected city
+        if (selected) {
+            initializeWeather();
+        }
+    }, [selected]);
 
+    const calculateIndividualGrade = (value, type) => {
+        if (type === 'Temperature') {
+            // Temperature grading logic
+            if (value >= 20) return 'A';
+            if (value >= 16 && value < 20) return 'B';
+            if (value >= 13 && value < 16) return 'C';
+            if (value >= 9 && value < 13) return 'D';
+            return 'F';
+        } else if (type === 'Wind Speed') {
+            // Wind Speed grading logic
+            if (value > 15) return 'F';
+            if (value > 12 && value <= 15) return 'D';
+            if (value > 7 && value <= 12) return 'C';
+            if (value > 4 && value <= 7) return 'B';
+            if (value >= 0 && value <= 4) return 'A';
+        }
+        return 'N/A'; // Default case
+    };
+
+    const calculateGrade = (temperature, windSpeed) => {
+        let grade;
+        if (temperature >= 20) grade = 'A';
+        else if (temperature >= 16 && temperature <= 19) grade = 'B';
+        else if (temperature >= 13 && temperature <= 15) grade = 'C';
+        else if (temperature >= 9 && temperature <= 12) grade = 'D';
+        else grade = 'F';
     
-    
+        if (windSpeed > 5) {
+            const gradeCharCode = grade.charCodeAt(0);
+            grade = String.fromCharCode(gradeCharCode + 1); // Lower the grade by one letter
+        }
+        return grade;
+    };
+
+    const grade = weather ? calculateGrade(weather.main.temp, weather.wind.speed) : 'N/A';
 
     const weatherInfo = weather ? [
-        { title: 'Temperature', value: `${weather.main.temp} °C` },
-        { title: 'Wind Speed', value: `${weather.wind.speed} m/s` },
+        { title: 'Temperature', value: `${weather.main.temp} °C`, type: 'Temperature' },
+        { title: 'Wind Speed', value: `${weather.wind.speed} m/s`, type: 'Wind Speed' },
+        { title: 'Overall Grade', value: grade, type: 'Grade' },
     ] : [];
+    
+    const getCircleColor = (grade) => {
+        switch (grade) {
+            case 'A':
+                return 'green';
+            case 'B':
+                return 'lightgreen';
+            case 'C':
+                return 'yellow';
+            case 'D':
+                return 'orange';
+            case 'F':
+                return 'red';
+            default:
+                return 'grey'; // Default color
+        }
+    };
+
+    const getCircleStyle = (grade) => {
+        return {
+            width: 10,
+            height: 10,
+            borderRadius: 5,
+            backgroundColor: getCircleColor(grade),
+            alignSelf: 'center',
+            marginTop: 10,
+        };
+        
+    };
 
     return (
         <SafeAreaView style={styles.container}>
@@ -109,13 +122,23 @@ const getCircleStyle = (title, value) => {
 
             {weather && (
             <View style={styles.weatherInfoContainer}>
-                {weatherInfo.map((info, index) => (
-                    <View key={index} style={getCardStyle(info.title === 'Temperature' ? parseFloat(info.value) : null)}>
-                        <Text style={styles.cardTitle}>{info.title}</Text>
-                        <Text style={styles.cardValue}>{info.value}</Text>
-                        <View style={getCircleStyle(info.title, info.value)}></View>
-                    </View>
-                    
+                {weatherInfo.slice(0, 2).map((info, index) => (
+                        <View key={index} style={styles.card}>
+                            <Text style={styles.cardTitle}>{info.title}</Text>
+                            <Text style={styles.cardValue}>{info.value}</Text>
+                            <View style={getCircleStyle(calculateIndividualGrade(parseFloat(info.value), info.type))}></View>
+                        </View>
+                ))}
+                </View>
+                )}
+            {weather && (
+            <View style={styles.weatherInfoContainer}>
+                {weatherInfo.slice(2).map((info, index) => (
+                        <View key={index} style={styles.card}>
+                            <Text style={styles.cardTitle}>{info.title}</Text>
+                            <Text style={styles.cardValue}>{info.value}</Text>       
+                                <View style={getCircleStyle(calculateGrade(parseFloat(info.value), info.type))}></View>
+                        </View> 
                 ))}
                 </View>
             )}
@@ -151,6 +174,12 @@ const styles = StyleSheet.create({
         width: '100%',
         padding: 10,
     },
+    singleCardContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 200,
+        padding: 10,
+    },
     card: {
         alignItems: 'center',
         justifyContent: 'center',
@@ -159,7 +188,7 @@ const styles = StyleSheet.create({
         padding: 10,
         marginVertical: 0,
         width: width / 2.6,  // Adjust width for three cards to fit in a row
-        height: 100,         // Smaller height
+        height: 80,         // Smaller height
         position: 'relative',
         top: 50, // Adjust this value as needed
         },
