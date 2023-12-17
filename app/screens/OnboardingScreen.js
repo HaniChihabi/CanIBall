@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, StyleSheet, Dimensions, TouchableOpacity, SafeAreaView, Button } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Dimensions, SafeAreaView, Button, TouchableOpacity } from 'react-native';
 import Onboarding from 'react-native-onboarding-swiper';
 import LottieView from 'lottie-react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Picker } from '@react-native-picker/picker';
+import axios from 'axios';
+
 
 
 const { width } = Dimensions.get('window');
@@ -12,70 +14,103 @@ export default function OnboardingScreen() {
     const navigation = useNavigation();
     const [selected, setSelected] = useState('Hanover');
     const [cityName, setCityName] = useState('');
+    const [suggestions, setSuggestions] = useState([]);
+    
+    const fetchSuggestions = async (input) => {
+        if (input.length > 0) {
+            try {
+                const options = {
+                    method: 'GET',
+                    url: 'https://wft-geo-db.p.rapidapi.com/v1/geo/cities',
+                    params: { namePrefix: input, minPopulation: 10000, limit: 5 },
+                    headers: {
+                        'X-RapidAPI-Host': 'wft-geo-db.p.rapidapi.com',
+                        'X-RapidAPI-Key': 'e88ee664bdmshad6c6505a38d94cp144614jsndeb85cd45b61'  // Replace with your RapidAPI key
+                    }
+                }; 
 
-    const handleSearch = () => {
-        navigation.navigate('WeatherDisplayScreen', { cityName });
+                const response = await axios.request(options);
+                const cities = response.data.data.map(city => `${city.name}, ${city.countryCode}`);
+                setSuggestions(cities);
+            } catch (error) {
+                setSuggestions([]);
+            }
+        } else {
+            setSuggestions([]);
+        }
     };
 
-    const City = [
-        { city: 'Frankfurt' },
-        { city: 'Miami' },
-        { city: 'München' },
-        { city: 'Hanover' },
-        { city: 'Frankfurt' },
-        { city: 'Miami' },
-        { city: 'München' },
-        { city: 'Hanover' },
-        { city: 'Frankfurt' },
-        { city: 'Miami' },
-        { city: 'München' },
-        { city: 'Hanover' },
-        { city: 'Los Angeles' },
-        { city: 'Houston' },
-        { city: 'Aleppo' },
-        { city: 'Madrid' },
-        { city: 'Frankfurt' },
-        { city: 'Miami' },
-        { city: 'München' },
-        { city: 'Hanover' },
-    ];
+    
+    
 
+    const handleSearch = async () => {
+        // Validate the input
+        if (cityName.trim() === '') {
+            alert('Please enter a city name');
+            return;
+        }
+    
+        try {
+            // Fetch weather data from the API
+            const apiKey = '294249189d29841b5a3b8791204c6411'; 
+            const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}`);
+            const data = await response.json();
+    
+            if (response.ok) {
+                // Navigate to WeatherDisplayScreen with the fetched data
+                navigation.navigate('Home', { selectedCity: cityName });
+            } else {
+                alert('City not found. Please try a different city name.');
+            }
+        } catch (error) {
+            alert('An error occurred. Please try again later.');
+        }
+
+    };
+    
     useEffect(() => {
-        setSelected(City[0].city);
+        setSelected(City[2].city);
     }, []);
 
-    const doneButton = ({ ...props }) => (
-        <TouchableOpacity 
-            style={styles.doneButton}
-            onPress={() => {
-                navigation.navigate('Home', { selectedCity: selected });
-            }} {...props}>
-            <Text>Done</Text>
-        </TouchableOpacity>
-    );
+    const City = [
+        { city: 'español' },
+        { city: 'português' },
+        { city: 'English' },
+        { city: 'Deutsch' },
+        { city: 'Francais' },
+        { city: 'español' },
+        { city: 'português' },
+        { city: 'English' },
+        { city: 'Deutsch' },
+        { city: 'Francais' },
+        { city: 'español' },
+        { city: 'português' },
+        { city: 'English' },
+        { city: 'Deutsch' },
+        { city: 'Francais' },
+    ];
 
     return (
         <View style={styles.container}>
             <Onboarding
-                onDone={() => navigation.navigate('Home', { selected: selected })}
-                onSkip={() => navigation.navigate('Home', { selected: selected })}
+                onSkip={() => navigation.navigate('HomeScreen')}
+                onDone={handleSearch}
                 pages={[
                     {
                         backgroundColor: 'turquoise',
                         image: (
-                            <SafeAreaView style={styles.container1}>
-                                
-                                <View style={styles.page1}>
-                                <Text style={[styles.title, { fontSize: 70 }]}>Can I Ball</Text>
-                                    <Text style={styles.subtitle}>Let's see what the weather says!</Text>
-                                </View>
-                                <LottieView
-                                    source={require('../assets/ConfettiAnimation.json')}
-                                    autoPlay
-                                    loop
-                                    style={styles.lottie1}
-                                />
-                            </SafeAreaView>
+                                <SafeAreaView style={styles.container1}>
+                                    <View style={styles.page1}>
+                                        <Text style={[styles.title, { fontSize: 70 }]}>Can I Ball</Text>
+                                        <Text style={styles.subtitle}>Let's see what the weather says!</Text>
+                                    </View>
+                                    <LottieView
+                                        source={require('../assets/ConfettiAnimation.json')}
+                                        autoPlay
+                                        loop
+                                        style={styles.lottie1}
+                                    />
+                                </SafeAreaView>
                         ),
                         title: '',
                         subtitle: '',
@@ -84,11 +119,9 @@ export default function OnboardingScreen() {
                         backgroundColor: '#a78bfa',
                         image: (
                             <SafeAreaView style={styles.container3}>
-                                
-                                <View style={styles.page2}>
-                                    
-                                <Text style={styles.title}>Choose Your Language!</Text>
-                                </View>
+                                    <View style={styles.page2}>
+                                        <Text style={styles.title}>Choose Your Language!</Text>
+                                    </View>
                                     <Picker
                                         selectedValue={selected}
                                         onValueChange={(itemValue) => setSelected(itemValue)}
@@ -99,13 +132,11 @@ export default function OnboardingScreen() {
                                         ))}
                                     </Picker>
                                     <LottieView
-                                    source={require('../assets/NewLanguagesAnimation.json')}
-                                    autoPlay
-                                    loop
-                                    style={styles.lottie2}
-                                />
-                               
-                                
+                                        source={require('../assets/NewLanguagesAnimation.json')}
+                                        autoPlay
+                                        loop
+                                        style={styles.lottie2}
+                                    /> 
                             </SafeAreaView>
                         ),
                         title: '',
@@ -115,21 +146,37 @@ export default function OnboardingScreen() {
                         backgroundColor: '#a78bfa',
                         image: (
                             <SafeAreaView style={styles.container2}>
-                                
                                 <View style={styles.page3}>
-                                  
-                                <Text style={styles.title}>Now Your City!</Text>
+                                    <Text style={styles.title}>Now Your City!</Text>
                                     <View style={styles.containerInput}>
                                         <TextInput
-                                            style={styles.input}
+                                            style={[styles.input, { backgroundColor: 'white' }]} // Temporary background color for debugging
                                             placeholder="Enter city name"
                                             value={cityName}
-                                            onChangeText={setCityName}
+                                            onChangeText={(text) => {
+                                                setCityName(text);
+                                                fetchSuggestions(text);
+                                            }}
                                         />
-                                        <Button
-                                            title="Search"
+                                        {suggestions.length > 0 && (
+                                            <View style={styles.suggestionsContainer}>
+                                                {suggestions.map((suggestion, index) => (
+                                                    <TouchableOpacity
+                                                        key={index}
+                                                        onPress={() => {
+                                                            setCityName(suggestion);
+                                                            setSuggestions([]);
+                                                        }}
+                                                    >
+                                                        <Text style={styles.suggestionItem}>{suggestion}</Text>
+                                                    </TouchableOpacity>
+                                                ))}
+                                            </View>
+                                        )}
+                                        {/* <Button style={styles.button}
+                                            title="Let's Go"
                                             onPress={handleSearch}
-                                        />
+                                        /> */}
                                     </View>
                                 </View>
                                    <LottieView
@@ -138,13 +185,11 @@ export default function OnboardingScreen() {
                                     loop
                                     style={styles.lottie3}
                                 /> 
-                                    
                             </SafeAreaView>
                         ),
                         title: '',
                         subtitle: '',
                     },
-                    
                 ]}
             />
         </View>
@@ -157,14 +202,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   },
-  containerInput: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 0,
-    position: 'relative',
-    top:0
-},
-  // lotties
+// lotties
   lottie1: {
     width: 200,
     height: 200,
@@ -172,7 +210,6 @@ const styles = StyleSheet.create({
     top: 70,
     alignSelf: 'center',
   },
-  
   lottie2: {
     width: 400,
     height: 200,
@@ -187,7 +224,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     top: 53,
   },
-  // page-contents
+// page-contents
   page1:{
     position: 'relative',
     top: 120
@@ -198,8 +235,9 @@ const styles = StyleSheet.create({
   },
   page3:{
     position: 'relative',
-    bottom: 25
+    bottom: 65
   },
+// Titles
   title: {
     fontSize: 40,
     textAlign: 'center',
@@ -211,7 +249,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     color: 'white',    fontWeight: 'bold',
-
     marginTop: 10,
   },
   doneButton: {
@@ -222,20 +259,39 @@ const styles = StyleSheet.create({
   },
   pickerStyle: {
     marginTop: 50,
-    width: width * 0.8,
+    width: 400,
     alignSelf: 'center',
     position: 'relative',
     top:60,
-  },
-  input: {
+},
+suggestionsContainer: {
+    backgroundColor: 'white',
     width: '100%',
+    position: 'absolute',
+    top: 60, 
+    zIndex: 1, 
+},
+suggestionItem: {
     padding: 10,
-    borderWidth: 1,
-    borderColor: '#ddd',
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+},
+containerInput: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
+    position: 'relative',
+    top:10,
+},
+input: {
+    width: 280,
+    padding: 10,
     marginBottom: 20,
     borderRadius: 5,
-    position: 'relative',
-    top: 10,
 },
+button: {
+    height:100,
+    width: 100
+}
   
 });
