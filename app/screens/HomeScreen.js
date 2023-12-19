@@ -2,9 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import LottieView from 'lottie-react-native';
-import fetchWeatherData from '../api/api'; 
 import { useRoute } from '@react-navigation/native';
-
 
 const { width } = Dimensions.get('window');
 
@@ -12,6 +10,8 @@ function HomeScreen({ navigation }) {
     const [selectedCity, setSelectedCity] = useState('');
     const [weather, setWeather] = useState(null);
     const route = useRoute();
+    const [isOverlayVisible, setIsOverlayVisible] = useState(false);
+    const [isGoldMode, setIsGoldMode] = useState(false);
 
     useEffect(() => {
         const newCity = route.params?.selectedCity;
@@ -27,6 +27,7 @@ function HomeScreen({ navigation }) {
         }
     }, [selectedCity]);
 
+
     const fetchWeatherDataForCity = async (city) => {
         try {
             const apiKey = '294249189d29841b5a3b8791204c6411';
@@ -38,9 +39,8 @@ function HomeScreen({ navigation }) {
             alert('Failed to fetch weather data. Please try again.');
         }
     };
+
     
-
-
     const calculateIndividualGrade = (value, type) => {
         if (type === 'Temperature') {
             // Temperature grading logic
@@ -49,19 +49,27 @@ function HomeScreen({ navigation }) {
             if (value >= 13 && value < 16) return 'C';
             if (value >= 9 && value < 13) return 'D';
             return 'F';
-        } else if (type === 'Wind Speed') {
+        } else if (type === 'Humidity') {
+            // Humidity grading logic
+            if (value >= 0 && value <= 50) return 'A';
+            if (value > 50 && value <= 70) return 'B';
+            if (value > 70 && value <= 80) return 'C';
+            if (value > 80 && value <= 85) return 'D';
+            return 'F';
+        }    
+            else if (type === 'Wind Speed') {
             // Wind Speed grading logic
             if (value >= 0 && value <= 4) return 'A';
             if (value > 4 && value <= 7) return 'B';
             if (value > 7 && value <= 12) return 'C';
             if (value > 12 && value <= 15) return 'D';
             return 'F';  
+           
         }
         return 'N/A'; // Default case
     };
 
-
-    const calculateGrade = (temperature, windSpeed) => {
+    const calculateGrade = (temperature, humidity, windSpeed) => {
         let grade;
 
         // Calculate grade based on temperature
@@ -79,19 +87,29 @@ function HomeScreen({ navigation }) {
             if (currentGrade === 'D') return 'F';
             return 'F'; 
         };
-        // Lower the grade based on wind speed conditions
         if (windSpeed > 5) {
             grade = lowerGrade(grade); 
         }
         if (windSpeed > 8) {
             grade = lowerGrade(grade);  
         }
+        if (humidity > 50) {
+            grade = lowerGrade(grade)
+        }
+        if (humidity > 100) {
+            grade = lowerGrade(grade)
+        }
         return grade;
+
+        
+
     };
 
-    const grade = weather ? calculateGrade(weather.main.temp, weather.wind.speed) : 'N/A';
+
+    const grade = weather ? calculateGrade(weather.main.temp, weather.main.humidity, weather.wind.speed) : 'N/A';
     const weatherInfo = weather ? [
         { title: 'Temperature', value: `${weather.main.temp} °C`, type: 'Temperature' },
+        { title: 'Humidity', value: `${weather.main.humidity} %`, type: 'Humidity' },
         { title: 'Wind Speed', value: `${weather.wind.speed} m/s`, type: 'Wind Speed' },
         { title: 'Overall Grade', value: grade, type: 'Grade' },
     ] : [];
@@ -122,22 +140,44 @@ function HomeScreen({ navigation }) {
             backgroundColor: getCircleColor(grade),
             alignSelf: 'center',
             marginTop: 10,
+            backgroundColor: isGoldMode ? 'green' : getCircleColor(grade),
         };   
     };
 
 
+    const ToggleButton = () => (
+        
+        <TouchableOpacity 
+            style={styles.toggleButton}
+            onPress={() => setIsGoldMode(!isGoldMode)}
+        >
+            <Text>{isGoldMode ? 'Keep Going' : 'Stop crying'}</Text>
+        </TouchableOpacity>
+    );
+    const baseContainerStyle = {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    };
+    
+
     return (
-        <SafeAreaView style={styles.container}>
+        
+        <SafeAreaView style={[baseContainerStyle, { backgroundColor: isGoldMode ? 'gold' : 'transparent' }]}>
+            {isOverlayVisible && <OverlayScreen />}
+            
+            <ToggleButton />
+
             <View style={styles.lottieContainer}>
                 <LottieView source={require('../assets/SpinAnimation.json')} autoPlay loop style={styles.lottie} />
             </View>
 
             {weather && (
                 <View style={styles.weatherInfoContainer}>
-                    {weatherInfo.slice(0, 2).map((info, index) => (
+                    {weatherInfo.slice(0, 3).map((info, index) => (
                         <View key={index} style={styles.card}>
                             <Text style={styles.cardTitle}>{info.title}</Text>
-                            <Text style={styles.cardValue}>{info.value}</Text>
+                            <Text style={styles.cardValue}>{isGoldMode ? 'Perfect' : info.value}</Text>
                             <View style={getCircleStyle(calculateIndividualGrade(parseFloat(info.value), info.type))}></View>
                         </View>
                     ))}
@@ -146,10 +186,10 @@ function HomeScreen({ navigation }) {
 
             {weather && (
                 <View style={styles.weatherInfoContainer}>
-                    {weatherInfo.slice(2).map((info, index) => (
-                        <View key={index} style={styles.card}>
+                    {weatherInfo.slice(3).map((info, index) => (
+                        <View key={index} style={styles.card1}>
                             <Text style={styles.cardTitle}>{info.title}</Text>
-                            <Text style={styles.cardValue}>{info.value}</Text>       
+                            <Text style={styles.cardValue}>{isGoldMode ? 'Perfect' : info.value}</Text>       
                             <View style={getCircleStyle(grade)}></View>
                         </View> 
                     ))}
@@ -200,13 +240,25 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         padding: 10,
         marginVertical: 0,
-        width: width / 2.6,  
+        width: width / 3.4,  
+        height: 80,      
+        position: 'relative',
+        top: 50,
+    },
+    card1: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#fff',
+        borderRadius: 10,
+        padding: 10,
+        marginVertical: 0,
+        width: 200,  
         height: 80,      
         position: 'relative',
         top: 50,
     },
     cardTitle: {
-        fontSize: 18,
+        fontSize: 15,
         fontWeight: 'bold',
         marginBottom:5
     },
@@ -220,7 +272,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         marginTop: 20,
         position: 'absolute',
-        top:10,
+        top:20,
     },
     pickerStyle: {
         width: 200,
@@ -235,6 +287,29 @@ const styles = StyleSheet.create({
         backgroundColor: '#34d399', 
         alignSelf: 'center',
         marginTop: 10,
+    },
+    toggleButton: {
+        position: 'absolute',
+        top: 40,
+        right: 30,
+        backgroundColor: '#ddd',
+        padding: 10,
+        borderRadius: 5,
+        zIndex: 2, // to ensure button is above other elements
+    },
+    overlay: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: 'gold',
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 1, // to ensure overlay is above other elements except the toggle button
+    },
+    goldMode: {
+        backgroundColor: 'gold', // Sets the background color to gold
     },
 });
 

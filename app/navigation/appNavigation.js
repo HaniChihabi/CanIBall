@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from '../screens/HomeScreen.js';
 import OnboardingScreen from '../screens/OnboardingScreen.js';
 
+
 const Stack = createNativeStackNavigator () ;
 
 export default function AppNavigation ( ) {

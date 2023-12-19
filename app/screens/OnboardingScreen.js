@@ -6,8 +6,6 @@ import { useNavigation } from '@react-navigation/native';
 import { Picker } from '@react-native-picker/picker';
 import axios from 'axios';
 
-
-
 const { width } = Dimensions.get('window');
 
 export default function OnboardingScreen() {
@@ -25,7 +23,7 @@ export default function OnboardingScreen() {
                     params: { namePrefix: input, minPopulation: 10000, limit: 5 },
                     headers: {
                         'X-RapidAPI-Host': 'wft-geo-db.p.rapidapi.com',
-                        'X-RapidAPI-Key': 'e88ee664bdmshad6c6505a38d94cp144614jsndeb85cd45b61'  // Replace with your RapidAPI key
+                        'X-RapidAPI-Key': 'e88ee664bdmshad6c6505a38d94cp144614jsndeb85cd45b61' 
                     }
                 }; 
 
@@ -40,7 +38,9 @@ export default function OnboardingScreen() {
         }
     };
 
-    
+
+
+    // ... existing states and functions
     
 
     const handleSearch = async () => {
@@ -89,6 +89,8 @@ export default function OnboardingScreen() {
         { city: 'Deutsch' },
         { city: 'Francais' },
     ];
+
+    
 
     return (
         <View style={styles.container}>
@@ -262,7 +264,7 @@ const styles = StyleSheet.create({
     width: 400,
     alignSelf: 'center',
     position: 'relative',
-    top:60,
+    bottom: 20,
 },
 suggestionsContainer: {
     backgroundColor: 'white',
@@ -281,7 +283,7 @@ containerInput: {
     justifyContent: 'center',
     padding: 20,
     position: 'relative',
-    top:10,
+    top:20,
 },
 input: {
     width: 280,
