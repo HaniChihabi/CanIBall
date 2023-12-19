@@ -1,7 +1,3 @@
-Certainly! Incorporating emojis into your README file can make it more engaging and visually appealing. Here's an updated version of the README file with emojis added for a bit of flair:
-
-markdown
-Copy code
 # Weather App 🌤️
 
 ## Introduction 📖
