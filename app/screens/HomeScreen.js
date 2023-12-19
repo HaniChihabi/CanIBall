@@ -96,7 +96,7 @@ function HomeScreen({ navigation }) {
         if (humidity > 50) {
             grade = lowerGrade(grade)
         }
-        if (humidity > 100) {
+        if (humidity > 80) {
             grade = lowerGrade(grade)
         }
         return grade;
@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
     },
     lottie: {
         position: 'relative',
-        top: 15,
+        top: 20,
         width: '100%',
         height: '100%',
     },
@@ -278,7 +278,7 @@ const styles = StyleSheet.create({
         width: 200,
         height: 50,
         position: 'relative',
-        bottom: 90
+        bottom: 50
     },
     circle: {
         width: 10,
@@ -291,7 +291,7 @@ const styles = StyleSheet.create({
     toggleButton: {
         position: 'absolute',
         top: 40,
-        right: 30,
+        right: 20,
         backgroundColor: '#ddd',
         padding: 10,
         borderRadius: 5,

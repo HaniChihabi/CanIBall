@@ -122,7 +122,7 @@ export default function OnboardingScreen() {
                         image: (
                             <SafeAreaView style={styles.container3}>
                                     <View style={styles.page2}>
-                                        <Text style={styles.title}>Choose Your Language!</Text>
+                                        <Text style={styles.title}>Language</Text>
                                     </View>
                                     <Picker
                                         selectedValue={selected}
@@ -149,7 +149,7 @@ export default function OnboardingScreen() {
                         image: (
                             <SafeAreaView style={styles.container2}>
                                 <View style={styles.page3}>
-                                    <Text style={styles.title}>Now Your City!</Text>
+                                    <Text style={styles.title}>City</Text>
                                     <View style={styles.containerInput}>
                                         <TextInput
                                             style={[styles.input, { backgroundColor: 'white' }]} // Temporary background color for debugging
@@ -181,7 +181,7 @@ export default function OnboardingScreen() {
                                         /> */}
                                     </View>
                                 </View>
-                                   <LottieView
+                                <LottieView
                                     source={require('../assets/CityAnimation.json')}
                                     autoPlay
                                     loop
@@ -233,7 +233,7 @@ const styles = StyleSheet.create({
   },
   page2:{
     position: 'relative',
-    top: 10,
+    bottom: 35,
   },
   page3:{
     position: 'relative',
@@ -264,7 +264,7 @@ const styles = StyleSheet.create({
     width: 400,
     alignSelf: 'center',
     position: 'relative',
-    bottom: 20,
+    top: 20,
 },
 suggestionsContainer: {
     backgroundColor: 'white',
