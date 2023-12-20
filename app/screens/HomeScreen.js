@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-nati
 import { SafeAreaView } from 'react-native-safe-area-context';
 import LottieView from 'lottie-react-native';
 import { useRoute } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const { width } = Dimensions.get('window');
 
@@ -12,6 +14,23 @@ function HomeScreen({ navigation }) {
     const route = useRoute();
     const [isOverlayVisible, setIsOverlayVisible] = useState(false);
     const [isGoldMode, setIsGoldMode] = useState(false);
+
+
+    useEffect(() => {
+        getData();
+    },[]);
+
+    const getData = async () => {
+          const value = await AsyncStorage.getItem('city');
+          setSelectedCity(value);
+          console.log(value);
+      };
+
+
+
+
+
+
 
     useEffect(() => {
         const newCity = route.params?.selectedCity;

@@ -5,8 +5,8 @@ import LottieView from 'lottie-react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Picker } from '@react-native-picker/picker';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const { width } = Dimensions.get('window');
 
 export default function OnboardingScreen() {
     const navigation = useNavigation();
@@ -20,28 +20,24 @@ export default function OnboardingScreen() {
                 const options = {
                     method: 'GET',
                     url: 'https://wft-geo-db.p.rapidapi.com/v1/geo/cities',
-                    params: { namePrefix: input, minPopulation: 10000, limit: 5 },
+                    params: { namePrefix: input, minPopulation: 1000000, limit: 5 },
                     headers: {
                         'X-RapidAPI-Host': 'wft-geo-db.p.rapidapi.com',
                         'X-RapidAPI-Key': 'e88ee664bdmshad6c6505a38d94cp144614jsndeb85cd45b61' 
                     }
                 }; 
-
                 const response = await axios.request(options);
                 const cities = response.data.data.map(city => `${city.name}, ${city.countryCode}`);
                 setSuggestions(cities);
             } catch (error) {
                 setSuggestions([]);
+
             }
         } else {
             setSuggestions([]);
         }
     };
 
-
-
-    // ... existing states and functions
-    
 
     const handleSearch = async () => {
         // Validate the input
@@ -51,17 +47,8 @@ export default function OnboardingScreen() {
         }
     
         try {
-            // Fetch weather data from the API
-            const apiKey = '294249189d29841b5a3b8791204c6411'; 
-            const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}`);
-            const data = await response.json();
-    
-            if (response.ok) {
-                // Navigate to WeatherDisplayScreen with the fetched data
-                navigation.navigate('Home', { selectedCity: cityName });
-            } else {
-                alert('City not found. Please try a different city name.');
-            }
+                storeData();
+                navigation.navigate('Home');
         } catch (error) {
             alert('An error occurred. Please try again later.');
         }
@@ -71,6 +58,15 @@ export default function OnboardingScreen() {
     useEffect(() => {
         setSelected(City[2].city);
     }, []);
+
+    const storeData = async () => {
+        try {
+          await AsyncStorage.setItem('city', cityName);
+          console.log('stored that bitch ass data', cityName);
+        } catch (e) {
+          // saving error
+        }
+      };
 
     const City = [
         { city: 'español' },
@@ -95,8 +91,11 @@ export default function OnboardingScreen() {
     return (
         <View style={styles.container}>
             <Onboarding
-                onSkip={() => navigation.navigate('HomeScreen')}
-                onDone={handleSearch}
+                skipLabel={''}
+                onDone={()=> {
+                    handleSearch();
+                    
+                }}
                 pages={[
                     {
                         backgroundColor: 'turquoise',
