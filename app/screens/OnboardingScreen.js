@@ -10,10 +10,34 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function OnboardingScreen() {
     const navigation = useNavigation();
-    const [selected, setSelected] = useState('Hanover');
+    const [language, setLanguage] = useState('');
     const [cityName, setCityName] = useState('');
     const [suggestions, setSuggestions] = useState([]);
+
+    // Language for picker
+    const Language = [
+        { Language: 'español' },
+        { Language: 'português' },
+        { Language: 'English' },
+        { Language: 'Deutsch' },
+        { Language: 'Francais' },
+        { Language: 'español' },
+        { Language: 'português' },
+        { Language: 'English' },
+        { Language: 'Deutsch' },
+        { Language: 'Francais' },
+        { Language: 'español' },
+        { Language: 'português' },
+        { Language: 'English' },
+        { Language: 'Deutsch' },
+        { Language: 'Francais' },
+    ];
+
+    useEffect(() => {
+        setLanguage(Language[2].Language);
+    }, []);
     
+    // Fetching city suggestions for search bar
     const fetchSuggestions = async (input) => {
         if (input.length > 0) {
             try {
@@ -31,62 +55,37 @@ export default function OnboardingScreen() {
                 setSuggestions(cities);
             } catch (error) {
                 setSuggestions([]);
-
             }
         } else {
             setSuggestions([]);
-        }
-    };
+        } 
+    }
 
-
+    // Enter the city name, store it & send it to homescreen
     const handleSearch = async () => {
-        // Validate the input
-        if (cityName.trim() === '') {
-            alert('Please enter a city name');
-            return;
-        }
-    
-        try {
-                storeData();
-                navigation.navigate('Home');
-        } catch (error) {
-            alert('An error occurred. Please try again later.');
+            // Validate the input
+            if (cityName.trim() === '') {
+                alert('Please enter a city name');
+                return;
+            }
+            // Store data and send city name to homescreen
+            try {
+                    storeData();
+                    navigation.navigate('Home', { selectedCity: cityName });
+                } catch (error) {
+                alert('An error occurred. Please try again later.');
+            }
         }
 
-    };
-    
-    useEffect(() => {
-        setSelected(City[2].city);
-    }, []);
-
+    // Storing data function
     const storeData = async () => {
-        try {
-          await AsyncStorage.setItem('city', cityName);
-          console.log('stored that bitch ass data', cityName);
-        } catch (e) {
-          // saving error
-        }
-      };
-
-    const City = [
-        { city: 'español' },
-        { city: 'português' },
-        { city: 'English' },
-        { city: 'Deutsch' },
-        { city: 'Francais' },
-        { city: 'español' },
-        { city: 'português' },
-        { city: 'English' },
-        { city: 'Deutsch' },
-        { city: 'Francais' },
-        { city: 'español' },
-        { city: 'português' },
-        { city: 'English' },
-        { city: 'Deutsch' },
-        { city: 'Francais' },
-    ];
-
-    
+            try {
+            await AsyncStorage.setItem('city', cityName);
+            console.log('stored that data', cityName);
+            } catch (e) {
+            // saving error
+            }
+        };
 
     return (
         <View style={styles.container}>
@@ -94,8 +93,8 @@ export default function OnboardingScreen() {
                 skipLabel={''}
                 onDone={()=> {
                     handleSearch();
-                    
                 }}
+                // Page1
                 pages={[
                     {
                         backgroundColor: 'turquoise',
@@ -116,6 +115,7 @@ export default function OnboardingScreen() {
                         title: '',
                         subtitle: '',
                     },
+                    // Page2
                     {
                         backgroundColor: '#a78bfa',
                         image: (
@@ -123,13 +123,14 @@ export default function OnboardingScreen() {
                                     <View style={styles.page2}>
                                         <Text style={styles.title}>Language</Text>
                                     </View>
+                                    {/* Language picker */}
                                     <Picker
-                                        selectedValue={selected}
-                                        onValueChange={(itemValue) => setSelected(itemValue)}
+                                        selectedValue={language}
+                                        onValueChange={(itemValue) => setLanguage(itemValue)}
                                         style={styles.pickerStyle}
                                     >
-                                        {City.map((city, index) => (
-                                            <Picker.Item key={index.toString()} label={city.city} value={city.city} />
+                                        {Language.map((Language, index) => (
+                                            <Picker.Item key={index.toString()} label={Language.Language} value={Language.Language} />
                                         ))}
                                     </Picker>
                                     <LottieView
@@ -143,6 +144,7 @@ export default function OnboardingScreen() {
                         title: '',
                         subtitle: '',
                     },
+                    // Page3
                     {
                         backgroundColor: '#a78bfa',
                         image: (
@@ -150,6 +152,7 @@ export default function OnboardingScreen() {
                                 <View style={styles.page3}>
                                     <Text style={styles.title}>City</Text>
                                     <View style={styles.containerInput}>
+                                        {/* Search bar */}
                                         <TextInput
                                             style={[styles.input, { backgroundColor: 'white' }]} // Temporary background color for debugging
                                             placeholder="Enter city name"
@@ -159,6 +162,7 @@ export default function OnboardingScreen() {
                                                 fetchSuggestions(text);
                                             }}
                                         />
+                                        {/* Fetching suggestions */}
                                         {suggestions.length > 0 && (
                                             <View style={styles.suggestionsContainer}>
                                                 {suggestions.map((suggestion, index) => (
@@ -174,10 +178,6 @@ export default function OnboardingScreen() {
                                                 ))}
                                             </View>
                                         )}
-                                        {/* <Button style={styles.button}
-                                            title="Let's Go"
-                                            onPress={handleSearch}
-                                        /> */}
                                     </View>
                                 </View>
                                 <LottieView

@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import LottieView from 'lottie-react-native';
-import { useRoute } from '@react-navigation/native';
+import { useRoute, useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 
 const { width } = Dimensions.get('window');
@@ -12,26 +13,26 @@ function HomeScreen({ navigation }) {
     const [selectedCity, setSelectedCity] = useState('');
     const [weather, setWeather] = useState(null);
     const route = useRoute();
-    const [isOverlayVisible, setIsOverlayVisible] = useState(false);
-    const [isGoldMode, setIsGoldMode] = useState(false);
+    const [isMentalitybutton, setIsMentalitybutton] = useState(false);
 
-
-    useEffect(() => {
-        getData();
-    },[]);
-
+    // Fetching city name from onboarding
     const getData = async () => {
           const value = await AsyncStorage.getItem('city');
           setSelectedCity(value);
           console.log(value);
       };
+    useEffect(() => {
+            getData();
+        },[]);
 
+    // Fetching weather data from city
+    useEffect(() => {
+            if (selectedCity) {
+                fetchWeatherDataForCity(selectedCity);
+            }
+        }, [selectedCity]);
 
-
-
-
-
-
+    // Changing city if new city has been entered & fetching new city weather data
     useEffect(() => {
         const newCity = route.params?.selectedCity;
         if (newCity && newCity !== selectedCity) {
@@ -39,27 +40,20 @@ function HomeScreen({ navigation }) {
             fetchWeatherDataForCity(newCity);
         }
     }, [route.params?.selectedCity]);
-    
-    useEffect(() => {
-        if (selectedCity) {
-            fetchWeatherDataForCity(selectedCity);
-        }
-    }, [selectedCity]);
 
-
+    // Fetching weather data for city
     const fetchWeatherDataForCity = async (city) => {
         try {
             const apiKey = '294249189d29841b5a3b8791204c6411';
-            // Add &units=metric to get temperature in Celsius
             const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`);
-            const data = await response.json();
+            const data = await response.json(); 
             setWeather(data);
         } catch (error) {
             alert('Failed to fetch weather data. Please try again.');
         }
     };
 
-    
+    // Grading logic of weather Temperature, Humidity and Wind Speed
     const calculateIndividualGrade = (value, type) => {
         if (type === 'Temperature') {
             // Temperature grading logic
@@ -68,7 +62,8 @@ function HomeScreen({ navigation }) {
             if (value >= 13 && value < 16) return 'C';
             if (value >= 9 && value < 13) return 'D';
             return 'F';
-        } else if (type === 'Humidity') {
+        } 
+            else if (type === 'Humidity') {
             // Humidity grading logic
             if (value >= 0 && value <= 50) return 'A';
             if (value > 50 && value <= 70) return 'B';
@@ -83,11 +78,12 @@ function HomeScreen({ navigation }) {
             if (value > 7 && value <= 12) return 'C';
             if (value > 12 && value <= 15) return 'D';
             return 'F';  
-           
         }
         return 'N/A'; // Default case
     };
 
+
+    // Grading logic of overall grade
     const calculateGrade = (temperature, humidity, windSpeed) => {
         let grade;
 
@@ -106,12 +102,14 @@ function HomeScreen({ navigation }) {
             if (currentGrade === 'D') return 'F';
             return 'F'; 
         };
+        // Lowering grade through wind speed
         if (windSpeed > 5) {
             grade = lowerGrade(grade); 
         }
-        if (windSpeed > 8) {
+        if (windSpeed > 10) {
             grade = lowerGrade(grade);  
         }
+        // Lowering grade through humidity
         if (humidity > 50) {
             grade = lowerGrade(grade)
         }
@@ -119,12 +117,9 @@ function HomeScreen({ navigation }) {
             grade = lowerGrade(grade)
         }
         return grade;
-
-        
-
     };
 
-
+    // Weather cards
     const grade = weather ? calculateGrade(weather.main.temp, weather.main.humidity, weather.wind.speed) : 'N/A';
     const weatherInfo = weather ? [
         { title: 'Temperature', value: `${weather.main.temp} °C`, type: 'Temperature' },
@@ -132,7 +127,6 @@ function HomeScreen({ navigation }) {
         { title: 'Wind Speed', value: `${weather.wind.speed} m/s`, type: 'Wind Speed' },
         { title: 'Overall Grade', value: grade, type: 'Grade' },
     ] : [];
-
 
     // CircleColor
     const getCircleColor = (grade) => {
@@ -159,18 +153,17 @@ function HomeScreen({ navigation }) {
             backgroundColor: getCircleColor(grade),
             alignSelf: 'center',
             marginTop: 10,
-            backgroundColor: isGoldMode ? 'green' : getCircleColor(grade),
+            backgroundColor: isMentalitybutton ? 'green' : getCircleColor(grade),
         };   
     };
 
-
+    // Mentalitybutton
     const ToggleButton = () => (
-        
         <TouchableOpacity 
             style={styles.toggleButton}
-            onPress={() => setIsGoldMode(!isGoldMode)}
-        >
-            <Text>{isGoldMode ? 'Keep Going' : 'Stop crying'}</Text>
+            onPress={() => setIsMentalitybutton(prevState => !prevState)}
+            >
+            <Text>{isMentalitybutton ? 'Keep Going' : 'Stop crying'}</Text>
         </TouchableOpacity>
     );
     const baseContainerStyle = {
@@ -181,44 +174,40 @@ function HomeScreen({ navigation }) {
     
 
     return (
-        
-        <SafeAreaView style={[baseContainerStyle, { backgroundColor: isGoldMode ? 'gold' : 'transparent' }]}>
-            {isOverlayVisible && <OverlayScreen />}
-            
+        <SafeAreaView style={[baseContainerStyle, { backgroundColor: isMentalitybutton ? 'gold' : 'transparent' }]}>            
             <ToggleButton />
-
+            {/* Lottie */}
             <View style={styles.lottieContainer}>
                 <LottieView source={require('../assets/SpinAnimation.json')} autoPlay loop style={styles.lottie} />
             </View>
-
+            {/* First three cards */}
             {weather && (
                 <View style={styles.weatherInfoContainer}>
                     {weatherInfo.slice(0, 3).map((info, index) => (
                         <View key={index} style={styles.card}>
                             <Text style={styles.cardTitle}>{info.title}</Text>
-                            <Text style={styles.cardValue}>{isGoldMode ? 'Perfect' : info.value}</Text>
+                            <Text style={styles.cardValue}>{isMentalitybutton ? 'Perfect' : info.value}</Text>
                             <View style={getCircleStyle(calculateIndividualGrade(parseFloat(info.value), info.type))}></View>
                         </View>
                     ))}
                 </View>
             )}
-
+            {/* Overall grade */}
             {weather && (
                 <View style={styles.weatherInfoContainer}>
                     {weatherInfo.slice(3).map((info, index) => (
                         <View key={index} style={styles.card1}>
                             <Text style={styles.cardTitle}>{info.title}</Text>
-                            <Text style={styles.cardValue}>{isGoldMode ? 'Perfect' : info.value}</Text>       
+                            <Text style={styles.cardValue}>{isMentalitybutton ? 'Perfect' : info.value}</Text>       
                             <View style={getCircleStyle(grade)}></View>
                         </View> 
                     ))}
                 </View>
             )}
-
+            {/* Reset button */}
             <TouchableOpacity onPress={() => navigation.push('Onboarding')} style={styles.resetButton}>
                 <Text>Reset</Text>
             </TouchableOpacity>
-
         </SafeAreaView>
     );
 };
@@ -327,7 +316,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         zIndex: 1, // to ensure overlay is above other elements except the toggle button
     },
-    goldMode: {
+    Mentalitybutton: {
         backgroundColor: 'gold', // Sets the background color to gold
     },
 });
