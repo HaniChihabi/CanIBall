@@ -14,6 +14,7 @@ export default function OnboardingScreen() {
     const [cityName, setCityName] = useState('');
     const [suggestions, setSuggestions] = useState([]);
 
+
     // Language for picker
     const Language = [
         { Language: 'español' },
@@ -71,7 +72,9 @@ export default function OnboardingScreen() {
             // Store data and send city name to homescreen
             try {
                     storeData();
+                    await AsyncStorage.setItem('onboardingCompleted', 'true');
                     navigation.navigate('Home', { selectedCity: cityName });
+                await AsyncStorage.setItem('city', cityName);
                 } catch (error) {
                 alert('An error occurred. Please try again later.');
             }

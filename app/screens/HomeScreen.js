@@ -41,6 +41,15 @@ function HomeScreen({ navigation }) {
         }
     }, [route.params?.selectedCity]);
 
+    // Inside HomeScreen
+useEffect(() => {
+    const cityPassed = route.params?.selectedCity;
+    if (cityPassed) {
+      setSelectedCity(cityPassed);
+      fetchWeatherDataForCity(cityPassed);
+    }
+  }, [route.params?.selectedCity]);
+
     // Fetching weather data for city
     const fetchWeatherDataForCity = async (city) => {
         try {
