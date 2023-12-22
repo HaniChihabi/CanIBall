@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import LottieView from 'lottie-react-native';
 import { useRoute, useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { fetchCityName } from '../service/apiservice';
 
 
 
@@ -25,13 +26,6 @@ function HomeScreen({ navigation }) {
             getData();
         },[]);
 
-    // Fetching weather data from city
-    useEffect(() => {
-            if (selectedCity) {
-                fetchWeatherDataForCity(selectedCity);
-            }
-        }, [selectedCity]);
-
     // Changing city if new city has been entered & fetching new city weather data
     useEffect(() => {
         const newCity = route.params?.selectedCity;
@@ -40,15 +34,6 @@ function HomeScreen({ navigation }) {
             fetchWeatherDataForCity(newCity);
         }
     }, [route.params?.selectedCity]);
-
-    // Inside HomeScreen
-useEffect(() => {
-    const cityPassed = route.params?.selectedCity;
-    if (cityPassed) {
-      setSelectedCity(cityPassed);
-      fetchWeatherDataForCity(cityPassed);
-    }
-  }, [route.params?.selectedCity]);
 
     // Fetching weather data for city
     const fetchWeatherDataForCity = async (city) => {
@@ -189,6 +174,7 @@ useEffect(() => {
             <View style={styles.lottieContainer}>
                 <LottieView source={require('../assets/SpinAnimation.json')} autoPlay loop style={styles.lottie} />
             </View>
+            <Text style={styles.cityName}>{selectedCity}</Text>
             {/* First three cards */}
             {weather && (
                 <View style={styles.weatherInfoContainer}>
@@ -260,7 +246,7 @@ const styles = StyleSheet.create({
         width: width / 3.4,  
         height: 80,      
         position: 'relative',
-        top: 50,
+        top: 30,
     },
     card1: {
         alignItems: 'center',
@@ -272,7 +258,7 @@ const styles = StyleSheet.create({
         width: 200,  
         height: 80,      
         position: 'relative',
-        top: 50,
+        top: 30,
     },
     cardTitle: {
         fontSize: 15,
@@ -312,7 +298,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#ddd',
         padding: 10,
         borderRadius: 5,
-        zIndex: 2, // to ensure button is above other elements
+        zIndex: 2,
     },
     overlay: {
         position: 'absolute',
@@ -323,10 +309,19 @@ const styles = StyleSheet.create({
         backgroundColor: 'gold',
         justifyContent: 'center',
         alignItems: 'center',
-        zIndex: 1, // to ensure overlay is above other elements except the toggle button
+        zIndex: 1,
     },
     Mentalitybutton: {
-        backgroundColor: 'gold', // Sets the background color to gold
+        backgroundColor: 'gold',
+    },
+    cityName: {
+        position: 'absolute',
+        bottom: 280,
+        fontSize: 20,
+        fontWeight: 'bold',
+        margin: 0, 
+        padding: 0,
+        zIndex: -100
     },
 });
 
