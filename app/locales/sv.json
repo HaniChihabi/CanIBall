@@ -1,0 +1,11 @@
+{
+  "welcome": "Välkommen!",
+  "weather": "Låt oss se vad vädret säger!",
+  "chooseLanguage": "Välj ditt språk!",
+  "enterCity": "Ange stadens namn",
+  "temperature": "Temperatur",
+  "humidity": "Luftfuktighet",
+  "windSpeed": "Vindhastighet",
+  "grade": "Betyg",
+  "reset": "Återställ"
+}

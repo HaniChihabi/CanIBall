@@ -6,29 +6,53 @@ import { useNavigation } from '@react-navigation/native';
 import { Picker } from '@react-native-picker/picker';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useTranslation } from 'react-i18next';
 
+
+  
 
 export default function OnboardingScreen() {
     const navigation = useNavigation();
-    const [language, setLanguage] = useState('');
     const [cityName, setCityName] = useState('');
     const [suggestions, setSuggestions] = useState([]);
 
+    const {t, i18n } = useTranslation();
+    const handleLanguageChange = (language) => {
+        i18n.changeLanguage(language);
+        AsyncStorage.setItem('appLanguage', language);
+      };
 
-    // Language for picker
-    const Language = [
-        { Language: 'Choose your language' },
-        { Language: 'português' },
-        { Language: 'English' },
-        { Language: 'Deutsch' },
-        { Language: 'Francais' },
-        { Language: 'español' },
-        { Language: 'svettig' },
-    ];
 
-    useEffect(() => {
-        setLanguage(Language[0].Language);
-    }, []);
+const LanguageOptions = [
+    { label: t('language.german'), value: 'de' },
+    { label: t('language.english'), value: 'en' },
+    { label: t('language.spanish'), value: 'es' },
+    { label: t('language.french'), value: 'fr' },
+    { label: t('language.portuguese'), value: 'pt' },
+    { label: t('language.swedish'), value: 'sv' },
+    { label: t('language.portuguese'), value: 'pt' },
+    // ... add other languages
+];
+    // // Language for picker
+    // const Language = [
+    //     { Language: 'Choose your language' },
+    //     { Language: 'português' },
+    //     { Language: 'English' },
+    //     { Language: 'Deutsch' },
+    //     { Language: 'Francais' },
+    //     { Language: 'español' },
+    //     { Language: 'svettig' },
+    // ];
+
+    // useEffect(() => {
+    //     // Set the initial language
+    //     setLanguage('en');
+    // }, []);
+
+
+    // useEffect(() => {
+    //     setLanguage(Language[0].Language);
+    // }, []);
     
     // Fetching city suggestions for search bar
     const fetchSuggestions = async (input) => {
@@ -96,6 +120,7 @@ export default function OnboardingScreen() {
                                 <SafeAreaView style={styles.container1}>
                                     <View style={styles.page1}>
                                         <Text style={[styles.title, { fontSize: 70 }]}>Can I Ball</Text>
+                                        <View><Text>{t('keyForYourText')}</Text></View>
                                         <Text style={styles.subtitle}>Let's see what the weather says!</Text>
                                     </View>
                                     <LottieView
@@ -119,14 +144,16 @@ export default function OnboardingScreen() {
                                     </View>
                                     {/* Language picker */}
                                     <Picker
-                                        selectedValue={language}
-                                        onValueChange={(itemValue) => setLanguage(itemValue)}
-                                        style={styles.pickerStyle}
-                                    >
-                                        {Language.map((Language, index) => (
-                                            <Picker.Item key={index.toString()} label={Language.Language} value={Language.Language} />
-                                        ))}
-                                    </Picker>
+                                    selectedValue={i18n.language}
+                                    onValueChange={(itemValue) => {
+                                        handleLanguageChange(itemValue);
+                                    }}
+                                    style={styles.pickerStyle}
+                                >
+                                    {LanguageOptions.map((lang, index) => (
+                                        <Picker.Item key={index} label={lang.label} value={lang.value} />
+                                    ))}
+                                </Picker>
                                     <LottieView
                                         source={require('../assets/NewLanguagesAnimation.json')}
                                         autoPlay
@@ -149,7 +176,7 @@ export default function OnboardingScreen() {
                                         {/* Search bar */}
                                         <TextInput
                                             style={[styles.input, { backgroundColor: 'white' }]} // Temporary background color for debugging
-                                            placeholder="Enter city name"
+                                            placeholder={t('welcome')}
                                             value={cityName}
                                             onChangeText={(text) => {
                                                 setCityName(text);

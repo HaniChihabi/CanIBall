@@ -1,0 +1,11 @@
+{
+  "welcome": "Willkommen!",
+  "weather": "Lassen Sie uns sehen, was das Wetter sagt!",
+  "chooseLanguage": "Wählen Sie Ihre Sprache!",
+  "enterCity": "Geben Sie den Stadtnamen ein",
+  "temperature": "Temperatur",
+  "humidity": "Feuchtigkeit",
+  "windSpeed": "Windgeschwindigkeit",
+  "grade": "Note",
+  "reset": "Zurücksetzen"
+}

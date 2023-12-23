@@ -1,7 +1,11 @@
 {
-    "welcome": "Welcome!",
-    "weather": "Let's see what the weather says!",
-    "chooseLanguage": "Choose Your Language!",
-    "enterCity": "Enter city name"
-  }
-  
+  "welcome": "Welcome!",
+  "weather": "Let's see what the weather says!",
+  "chooseLanguage": "Choose Your Language!",
+  "enterCity": "Enter city name",
+  "temperature": "Temperature",
+  "humidity": "Humidity",
+  "windSpeed": "Wind Speed",
+  "grade": "Grade",
+  "reset": "Reset"
+}

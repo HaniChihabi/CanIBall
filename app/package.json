@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@formatjs/intl-pluralrules": "^5.2.10",
     "@react-native-async-storage/async-storage": "1.18.2",
     "@react-native-picker/picker": "^2.6.1",
     "@react-navigation/native": "^6.1.9",
@@ -21,6 +22,7 @@
     "expo-status-bar": "~1.6.0",
     "i18n-js": "^4.3.2",
     "i18next": "^23.7.11",
+    "intl-pluralrules": "^2.0.1",
     "lottie-ios": "^3.4.0",
     "lottie-react-native": "5.1.6",
     "nativewind": "^2.0.11",

@@ -1,7 +1,11 @@
 {
-    "welcome": "¡Bienvenido!",
-    "weather": "¡Veamos qué dice el clima!",
-    "chooseLanguage": "¡Elige tu idioma!",
-    "enterCity": "Introduce el nombre de la ciudad"
-  }
-  
+  "welcome": "¡Bienvenido!",
+  "weather": "¡Veamos qué dice el clima!",
+  "chooseLanguage": "¡Elige tu idioma!",
+  "enterCity": "Introduce el nombre de la ciudad",
+  "temperature": "Temperatura",
+  "humidity": "Humedad",
+  "windSpeed": "Velocidad del viento",
+  "grade": "Calificación",
+  "reset": "Reiniciar"
+}
