@@ -119,7 +119,7 @@ function HomeScreen({ navigation }) {
         { title: 'Temperature', value: `${weather.main.temp} °C`, type: 'Temperature' },
         { title: 'Humidity', value: `${weather.main.humidity} %`, type: 'Humidity' },
         { title: 'Wind Speed', value: `${weather.wind.speed} m/s`, type: 'Wind Speed' },
-        { title: 'Overall Grade', value: grade, type: 'Grade' },
+        { title: selectedCity, value: grade, type: 'Grade' },
     ] : [];
 
     // CircleColor
@@ -165,6 +165,20 @@ function HomeScreen({ navigation }) {
         alignItems: 'center',
         justifyContent: 'center',
     };
+
+    // Reset button functionality
+    const handleReset = async () => {
+        try {
+            // Reset the onboardingCompleted flag in AsyncStorage
+            await AsyncStorage.setItem('onboardingCompleted', 'false');
+            console.log('Onboarding reset successful');
+
+            // Navigate to the OnboardingScreen
+            navigation.navigate('Onboarding');
+        } catch (error) {
+            console.error('Failed to reset onboarding:', error);
+        }
+    };
     
 
     return (
@@ -174,7 +188,6 @@ function HomeScreen({ navigation }) {
             <View style={styles.lottieContainer}>
                 <LottieView source={require('../assets/SpinAnimation.json')} autoPlay loop style={styles.lottie} />
             </View>
-            <Text style={styles.cityName}>{selectedCity}</Text>
             {/* First three cards */}
             {weather && (
                 <View style={styles.weatherInfoContainer}>
@@ -200,7 +213,7 @@ function HomeScreen({ navigation }) {
                 </View>
             )}
             {/* Reset button */}
-            <TouchableOpacity onPress={() => navigation.push('Onboarding')} style={styles.resetButton}>
+            <TouchableOpacity onPress={handleReset} style={styles.resetButton}>
                 <Text>Reset</Text>
             </TouchableOpacity>
         </SafeAreaView>
@@ -313,15 +326,6 @@ const styles = StyleSheet.create({
     },
     Mentalitybutton: {
         backgroundColor: 'gold',
-    },
-    cityName: {
-        position: 'absolute',
-        bottom: 280,
-        fontSize: 20,
-        fontWeight: 'bold',
-        margin: 0, 
-        padding: 0,
-        zIndex: -100
     },
 });
 

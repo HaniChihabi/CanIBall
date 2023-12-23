@@ -17,25 +17,17 @@ export default function OnboardingScreen() {
 
     // Language for picker
     const Language = [
-        { Language: 'español' },
+        { Language: 'Choose your language' },
         { Language: 'português' },
         { Language: 'English' },
         { Language: 'Deutsch' },
         { Language: 'Francais' },
         { Language: 'español' },
-        { Language: 'português' },
-        { Language: 'English' },
-        { Language: 'Deutsch' },
-        { Language: 'Francais' },
-        { Language: 'español' },
-        { Language: 'português' },
-        { Language: 'English' },
-        { Language: 'Deutsch' },
-        { Language: 'Francais' },
+        { Language: 'svettig' },
     ];
 
     useEffect(() => {
-        setLanguage(Language[2].Language);
+        setLanguage(Language[0].Language);
     }, []);
     
     // Fetching city suggestions for search bar
@@ -74,7 +66,6 @@ export default function OnboardingScreen() {
                     storeData();
                     await AsyncStorage.setItem('onboardingCompleted', 'true');
                     navigation.navigate('Home', { selectedCity: cityName });
-                await AsyncStorage.setItem('city', cityName);
                 } catch (error) {
                 alert('An error occurred. Please try again later.');
             }
@@ -266,7 +257,7 @@ const styles = StyleSheet.create({
     width: 400,
     alignSelf: 'center',
     position: 'relative',
-    top: 20,
+    bottom: 90,
 },
 suggestionsContainer: {
     backgroundColor: 'white',

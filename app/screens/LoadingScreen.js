@@ -11,9 +11,9 @@ const LoadingScreen = () => {
             try {
                 const onboardingCompleted = await AsyncStorage.getItem('onboardingCompleted');
                 if (onboardingCompleted === 'true') {
+
                     // Retrieve city name
                     const storedCityName = await AsyncStorage.getItem('city');
-
                     // Navigate to the Home screen and pass the city name
                     navigation.replace('Home', { selectedCity: storedCityName });
                 } else {
