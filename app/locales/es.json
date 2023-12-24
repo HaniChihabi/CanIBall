@@ -1,11 +1,19 @@
 {
-  "welcome": "¡Bienvenido!",
-  "weather": "¡Veamos qué dice el clima!",
-  "chooseLanguage": "¡Elige tu idioma!",
-  "enterCity": "Introduce el nombre de la ciudad",
+  "Welcome": "Bienvenido",
+  "Lets see what the weather says!": "¡Veamos qué dice el clima!",
+  "Language": "Idioma",
+  "City": "Ciudad",
+  "Choose Your Language": "¡Elige tu idioma!",
+  "An error occurred. Please try again later.": "Ocurrió un error. Por favor, inténtalo de nuevo más tarde.",
+  "Failed to fetch weather data. Please try again.": "Fallo al obtener datos del clima. Por favor, inténtalo de nuevo.",
+  "Enter city name": "Ingresa el nombre de la ciudad",
+  "Please enter a city name": "Por favor, ingresa un nombre de ciudad",
   "temperature": "Temperatura",
   "humidity": "Humedad",
   "windSpeed": "Velocidad del viento",
   "grade": "Calificación",
-  "reset": "Reiniciar"
+  "Perfect": "Perfecto",
+  "reset": "Reiniciar",
+  "Keep Going": "Continúa",
+  "Stop crying": "Deja de llorar"
 }

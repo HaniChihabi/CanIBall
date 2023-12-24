@@ -1,9 +1,8 @@
+import 'intl-pluralrules'
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import AppNavigator from './navigation/appNavigation'; // Ensure this path is correct
 import i18n from './i18n'; // Import your i18n configuration
-import 'intl-pluralrules';
-import '@formatjs/intl-pluralrules/polyfill';
 
 
 

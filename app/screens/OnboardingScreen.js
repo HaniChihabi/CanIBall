@@ -24,36 +24,15 @@ export default function OnboardingScreen() {
 
 
 const LanguageOptions = [
-    { label: t('language.german'), value: 'de' },
-    { label: t('language.english'), value: 'en' },
-    { label: t('language.spanish'), value: 'es' },
-    { label: t('language.french'), value: 'fr' },
-    { label: t('language.portuguese'), value: 'pt' },
-    { label: t('language.swedish'), value: 'sv' },
-    { label: t('language.portuguese'), value: 'pt' },
+    { label: t('German'), value: 'de' },
+    { label: t('English'), value: 'en' },
+    { label: t('Spanish'), value: 'es' },
+    { label: t('French'), value: 'fr' },
+    { label: t('Portuguese'), value: 'pt' },
+    { label: t('Swedish'), value: 'sv' },
     // ... add other languages
 ];
-    // // Language for picker
-    // const Language = [
-    //     { Language: 'Choose your language' },
-    //     { Language: 'português' },
-    //     { Language: 'English' },
-    //     { Language: 'Deutsch' },
-    //     { Language: 'Francais' },
-    //     { Language: 'español' },
-    //     { Language: 'svettig' },
-    // ];
 
-    // useEffect(() => {
-    //     // Set the initial language
-    //     setLanguage('en');
-    // }, []);
-
-
-    // useEffect(() => {
-    //     setLanguage(Language[0].Language);
-    // }, []);
-    
     // Fetching city suggestions for search bar
     const fetchSuggestions = async (input) => {
         if (input.length > 0) {
@@ -82,7 +61,7 @@ const LanguageOptions = [
     const handleSearch = async () => {
             // Validate the input
             if (cityName.trim() === '') {
-                alert('Please enter a city name');
+                alert(t('Please enter a city name'));
                 return;
             }
             // Store data and send city name to homescreen
@@ -91,7 +70,7 @@ const LanguageOptions = [
                     await AsyncStorage.setItem('onboardingCompleted', 'true');
                     navigation.navigate('Home', { selectedCity: cityName });
                 } catch (error) {
-                alert('An error occurred. Please try again later.');
+                alert(t('An error occurred. Please try again later.'));
             }
         }
 
@@ -120,8 +99,7 @@ const LanguageOptions = [
                                 <SafeAreaView style={styles.container1}>
                                     <View style={styles.page1}>
                                         <Text style={[styles.title, { fontSize: 70 }]}>Can I Ball</Text>
-                                        <View><Text>{t('keyForYourText')}</Text></View>
-                                        <Text style={styles.subtitle}>Let's see what the weather says!</Text>
+                                        <Text style={styles.subtitle}>{t('Lets see what the weather says!')}</Text>
                                     </View>
                                     <LottieView
                                         source={require('../assets/ConfettiAnimation.json')}
@@ -140,7 +118,7 @@ const LanguageOptions = [
                         image: (
                             <SafeAreaView style={styles.container3}>
                                     <View style={styles.page2}>
-                                        <Text style={styles.title}>Language</Text>
+                                        <Text style={styles.title}>{t('Language')}</Text>
                                     </View>
                                     {/* Language picker */}
                                     <Picker
@@ -171,12 +149,12 @@ const LanguageOptions = [
                         image: (
                             <SafeAreaView style={styles.container2}>
                                 <View style={styles.page3}>
-                                    <Text style={styles.title}>City</Text>
+                                    <Text style={styles.title}>{t('City')}</Text>
                                     <View style={styles.containerInput}>
                                         {/* Search bar */}
                                         <TextInput
                                             style={[styles.input, { backgroundColor: 'white' }]} // Temporary background color for debugging
-                                            placeholder={t('welcome')}
+                                            placeholder={t("Enter city name")}
                                             value={cityName}
                                             onChangeText={(text) => {
                                                 setCityName(text);

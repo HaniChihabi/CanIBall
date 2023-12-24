@@ -1,11 +1,19 @@
 {
-  "welcome": "Welcome!",
-  "weather": "Let's see what the weather says!",
-  "chooseLanguage": "Choose Your Language!",
-  "enterCity": "Enter city name",
+  "Welcome": "Welcome",
+  "Lets see what the weather says!": "Let's see what the weather says!",
+  "Language" : "Language",
+  "City" : "City",
+  "Choose Your Language": "Choose Your Language!",
+  "An error occurred. Please try again later." : "An error occurred. Please try again later.",
+  "Failed to fetch weather data. Please try again." : "Failed to fetch weather data. Please try again.",
+  "Enter city name": "Enter city name",
+  "Please enter a city name" : "Please enter a city name",
   "temperature": "Temperature",
   "humidity": "Humidity",
   "windSpeed": "Wind Speed",
   "grade": "Grade",
-  "reset": "Reset"
+  "Perfect" : "Perfect",
+  "reset": "Reset",
+  "Keep Going": "Keep Going",
+  "Stop crying" : "Stop crying"
 }

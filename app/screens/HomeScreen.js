@@ -4,7 +4,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import LottieView from 'lottie-react-native';
 import { useRoute, useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { fetchCityName } from '../service/apiservice';
+import { useTranslation } from 'react-i18next';
+
+
 
 
 
@@ -15,6 +17,8 @@ function HomeScreen({ navigation }) {
     const [weather, setWeather] = useState(null);
     const route = useRoute();
     const [isMentalitybutton, setIsMentalitybutton] = useState(false);
+    const { t, i18n } = useTranslation();
+
 
     // Fetching city name from onboarding
     const getData = async () => {
@@ -43,7 +47,7 @@ function HomeScreen({ navigation }) {
             const data = await response.json(); 
             setWeather(data);
         } catch (error) {
-            alert('Failed to fetch weather data. Please try again.');
+            alert(t('Failed to fetch weather data. Please try again.'));
         }
     };
 
@@ -116,9 +120,9 @@ function HomeScreen({ navigation }) {
     // Weather cards
     const grade = weather ? calculateGrade(weather.main.temp, weather.main.humidity, weather.wind.speed) : 'N/A';
     const weatherInfo = weather ? [
-        { title: 'Temperature', value: `${weather.main.temp} °C`, type: 'Temperature' },
-        { title: 'Humidity', value: `${weather.main.humidity} %`, type: 'Humidity' },
-        { title: 'Wind Speed', value: `${weather.wind.speed} m/s`, type: 'Wind Speed' },
+        { title: t("temperature"), value: `${weather.main.temp} °C`, type: 'Temperature' },
+        { title: t("humidity"), value: `${weather.main.humidity} %`, type: 'Humidity' },
+        { title: t("windSpeed"), value: `${weather.wind.speed} m/s`, type: 'Wind Speed' },
         { title: selectedCity, value: grade, type: 'Grade' },
     ] : [];
 
@@ -157,7 +161,7 @@ function HomeScreen({ navigation }) {
             style={styles.toggleButton}
             onPress={() => setIsMentalitybutton(prevState => !prevState)}
             >
-            <Text>{isMentalitybutton ? 'Keep Going' : 'Stop crying'}</Text>
+            <Text>{isMentalitybutton ? t('Keep Going') : t('Stop crying')}</Text>
         </TouchableOpacity>
     );
     const baseContainerStyle = {
@@ -194,7 +198,7 @@ function HomeScreen({ navigation }) {
                     {weatherInfo.slice(0, 3).map((info, index) => (
                         <View key={index} style={styles.card}>
                             <Text style={styles.cardTitle}>{info.title}</Text>
-                            <Text style={styles.cardValue}>{isMentalitybutton ? 'Perfect' : info.value}</Text>
+                            <Text style={styles.cardValue}>{isMentalitybutton ? t('Perfect') : info.value}</Text>
                             <View style={getCircleStyle(calculateIndividualGrade(parseFloat(info.value), info.type))}></View>
                         </View>
                     ))}
@@ -206,7 +210,7 @@ function HomeScreen({ navigation }) {
                     {weatherInfo.slice(3).map((info, index) => (
                         <View key={index} style={styles.card1}>
                             <Text style={styles.cardTitle}>{info.title}</Text>
-                            <Text style={styles.cardValue}>{isMentalitybutton ? 'Perfect' : info.value}</Text>       
+                            <Text style={styles.cardValue}>{isMentalitybutton ? t('Perfect') : info.value}</Text>       
                             <View style={getCircleStyle(grade)}></View>
                         </View> 
                     ))}
@@ -214,7 +218,7 @@ function HomeScreen({ navigation }) {
             )}
             {/* Reset button */}
             <TouchableOpacity onPress={handleReset} style={styles.resetButton}>
-                <Text>Reset</Text>
+                <Text>{t("reset")}</Text>
             </TouchableOpacity>
         </SafeAreaView>
     );
@@ -274,7 +278,7 @@ const styles = StyleSheet.create({
         top: 30,
     },
     cardTitle: {
-        fontSize: 15,
+        fontSize: 12,
         fontWeight: 'bold',
         marginBottom:5
     },

@@ -1,11 +1,19 @@
 {
-  "welcome": "Välkommen!",
-  "weather": "Låt oss se vad vädret säger!",
-  "chooseLanguage": "Välj ditt språk!",
-  "enterCity": "Ange stadens namn",
+  "Welcome": "Välkommen",
+  "Lets see what the weather says!": "Låt oss se vad vädret säger!",
+  "Language": "Språk",
+  "City": "Stad",
+  "Choose Your Language": "Välj ditt språk!",
+  "An error occurred. Please try again later.": "Ett fel inträffade. Försök igen senare.",
+  "Failed to fetch weather data. Please try again.": "Det gick inte att hämta väderdata. Försök igen.",
+  "Enter city name": "Ange stadens namn",
+  "Please enter a city name": "Vänligen ange ett stadsnamn",
   "temperature": "Temperatur",
-  "humidity": "Luftfuktighet",
+  "humidity": "Fuktighet",
   "windSpeed": "Vindhastighet",
   "grade": "Betyg",
-  "reset": "Återställ"
+  "Perfect": "Perfekt",
+  "reset": "Återställ",
+  "Keep Going": "Fortsätt",
+  "Stop crying": "Sluta gråta"
 }
