@@ -44,10 +44,18 @@ function HomeScreen({ navigation }) {
         try {
             const apiKey = '294249189d29841b5a3b8791204c6411';
             const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`);
-            const data = await response.json(); 
-            setWeather(data);
+            const data = await response.json();
+            if (data && data.main) {
+                setWeather(data);
+            } else {
+                // Handle cases where no data is returned for the city
+                setWeather(null);
+                alert(t('No weather data found for the city. Please try another city.'));
+            }
         } catch (error) {
+            // Handle network or other errors gracefully
             alert(t('Failed to fetch weather data. Please try again.'));
+            setWeather(null);
         }
     };
 

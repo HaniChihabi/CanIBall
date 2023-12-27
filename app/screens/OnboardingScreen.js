@@ -12,6 +12,7 @@ export default function OnboardingScreen() {
     const navigation = useNavigation();
     const [cityName, setCityName] = useState('');
     const [suggestions, setSuggestions] = useState([]);
+
     const {t, i18n } = useTranslation();
     const handleLanguageChange = (language) => {
         i18n.changeLanguage(language);
@@ -19,17 +20,17 @@ export default function OnboardingScreen() {
       };
 
 const LanguageOptions = [
-    { label: t('German'), value: 'de' },
-    { label: t('English'), value: 'en' },
-    { label: t('Spanish'), value: 'es' },
-    { label: t('French'), value: 'fr' },
-    { label: t('Portuguese'), value: 'pt' },
-    { label: t('Swedish'), value: 'sv' },
-    { label: t('Arabic'), value: 'ar' },
-    { label: t('Kurdish'), value: 'kr' },
-    { label: t('Japanese'), value: 'jp' },
+    { label: t('Araby'), value: 'ar' },
     { label: t('Chinese'), value: 'ch' },
+    { label: t('English'), value: 'en' },
+    { label: t('French'), value: 'fr' },
+    { label: t('German'), value: 'de' },
+    { label: t('Japanese'), value: 'jp' },
+    { label: t('Kurdish'), value: 'kr' },
+    { label: t('Portuguese'), value: 'pt' },  
     { label: t('Russian'), value: 'rs' },
+    { label: t('Spanish'), value: 'es' },
+    { label: t('Swedish'), value: 'sv' },
     // ... add other languages
 ];
 
@@ -68,6 +69,7 @@ const LanguageOptions = [
             try {
                     storeData();
                     await AsyncStorage.setItem('onboardingCompleted', 'true');
+                    navigation.removeListener
                     navigation.navigate('Home', { selectedCity: cityName });
                 } catch (error) {
                 alert(t('An error occurred. Please try again later.'));
@@ -263,6 +265,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     position: 'relative',
     bottom: 90,
+
 },
 suggestionsContainer: {
     backgroundColor: 'white',
