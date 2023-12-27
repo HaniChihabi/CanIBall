@@ -1,0 +1,20 @@
+{
+    "Welcome": "بەخێربێی",
+    "Lets see what the weather says!": "ببینە کەشوهەوا چی دەڵێت!",
+    "Language": "زمان",
+    "City": "شار",
+    "Choose Your Language": "زمانەکەت هەڵبژێرە",
+    "An error occurred. Please try again later.": "هەڵەیەک روویدا. تکایە دواتر هەوڵبدەوە.",
+    "Failed to fetch weather data. Please try again.": "ستاندنی داتای کەشوهەوا شکستی هێنا. تکایە دووبارە هەوڵبدە.",
+    "Enter city name": "ناوی شار بنووسە",
+    "Please enter a city name": "تکایە ناوی شارێک بنووسە",
+    "temperature": "پلەی گەرمی",
+    "humidity": "رەنگدانەوە",
+    "windSpeed": "خێرایی باد",
+    "grade": "پلە",
+    "Perfect": "کامڵ",
+    "reset": "ڕێکخستنەوە",
+    "Keep Going": "بەردەوام بە",
+    "Stop crying": "لە گریان بوەستە"
+  }
+  

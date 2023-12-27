@@ -7,6 +7,12 @@ import es from './locales/es.json';
 import fr from './locales/fr.json';
 import pt from './locales/pt.json';
 import sv from './locales/sv.json';
+import ar from './locales/ar.json';
+import kr from './locales/kr.json';
+import jp from './locales/jp.json';
+import ch from './locales/ch.json';
+import rs from './locales/rs.json';
+
 
 i18n
   .use(initReactI18next)
@@ -18,6 +24,11 @@ i18n
       fr: { translation: fr },
       pt: { translation: pt },
       sv: { translation: sv },
+      ar: { translation: ar },
+      kr: { translation: kr },
+      jp: { translation: jp },
+      ch: { translation: ch },
+      rs: { translation: rs },
     },
     lng: 'en',
     fallbackLng: 'en',

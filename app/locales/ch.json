@@ -1,0 +1,20 @@
+{
+    "Welcome": "欢迎",
+    "Lets see what the weather says!": "让我们看看天气怎么样！",
+    "Language": "语言",
+    "City": "城市",
+    "Choose Your Language": "选择你的语言",
+    "An error occurred. Please try again later.": "发生错误。请稍后再试。",
+    "Failed to fetch weather data. Please try again.": "获取天气数据失败。请再试一次。",
+    "Enter city name": "输入城市名称",
+    "Please enter a city name": "请输入城市名称",
+    "temperature": "温度",
+    "humidity": "湿度",
+    "windSpeed": "风速",
+    "grade": "等级",
+    "Perfect": "完美",
+    "reset": "重置",
+    "Keep Going": "继续",
+    "Stop crying": "停止哭泣"
+  }
+  

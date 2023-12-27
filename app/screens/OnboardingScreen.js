@@ -8,20 +8,15 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTranslation } from 'react-i18next';
 
-
-  
-
 export default function OnboardingScreen() {
     const navigation = useNavigation();
     const [cityName, setCityName] = useState('');
     const [suggestions, setSuggestions] = useState([]);
-
     const {t, i18n } = useTranslation();
     const handleLanguageChange = (language) => {
         i18n.changeLanguage(language);
         AsyncStorage.setItem('appLanguage', language);
       };
-
 
 const LanguageOptions = [
     { label: t('German'), value: 'de' },
@@ -30,6 +25,11 @@ const LanguageOptions = [
     { label: t('French'), value: 'fr' },
     { label: t('Portuguese'), value: 'pt' },
     { label: t('Swedish'), value: 'sv' },
+    { label: t('Arabic'), value: 'ar' },
+    { label: t('Kurdish'), value: 'kr' },
+    { label: t('Japanese'), value: 'jp' },
+    { label: t('Chinese'), value: 'ch' },
+    { label: t('Russian'), value: 'rs' },
     // ... add other languages
 ];
 

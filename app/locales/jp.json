@@ -1,0 +1,20 @@
+{
+    "Welcome": "ようこそ",
+    "Lets see what the weather says!": "天気がどうなっているか見てみましょう！",
+    "Language": "言語",
+    "City": "市",
+    "Choose Your Language": "言語を選択してください",
+    "An error occurred. Please try again later.": "エラーが発生しました。後ほど再試行してください。",
+    "Failed to fetch weather data. Please try again.": "天気データの取得に失敗しました。もう一度試してください。",
+    "Enter city name": "市の名前を入力",
+    "Please enter a city name": "市の名前を入力してください",
+    "temperature": "温度",
+    "humidity": "湿度",
+    "windSpeed": "風速",
+    "grade": "等級",
+    "Perfect": "完璧",
+    "reset": "リセット",
+    "Keep Going": "続ける",
+    "Stop crying": "泣き止む"
+  }
+  

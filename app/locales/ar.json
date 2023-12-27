@@ -1,0 +1,20 @@
+{
+    "Welcome": "مرحبا",
+    "Lets see what the weather says!": "لنرى ماذا يقول الطقس!",
+    "Language": "اللغة",
+    "City": "المدينة",
+    "Choose Your Language": "اختر لغتك!",
+    "An error occurred. Please try again later.": "حدث خطأ. الرجاء المحاولة مرة أخرى لاحقا.",
+    "Failed to fetch weather data. Please try again.": "فشل في جلب بيانات الطقس. الرجاء المحاولة مرة أخرى.",
+    "Enter city name": "أدخل اسم المدينة",
+    "Please enter a city name": "يرجى إدخال اسم مدينة",
+    "temperature": "درجة الحرارة",
+    "humidity": "الرطوبة",
+    "windSpeed": "سرعة الرياح",
+    "grade": "الدرجة",
+    "Perfect": "ممتاز",
+    "reset": "إعادة تعيين",
+    "Keep Going": "استمر",
+    "Stop crying": "توقف عن البكاء"
+  }
+  
