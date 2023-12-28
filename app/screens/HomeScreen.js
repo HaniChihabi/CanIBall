@@ -184,9 +184,11 @@ function HomeScreen({ navigation }) {
             // Reset the onboardingCompleted flag in AsyncStorage
             await AsyncStorage.setItem('onboardingCompleted', 'false');
             console.log('Onboarding reset successful');
-
             // Navigate to the OnboardingScreen
-            navigation.navigate('Onboarding');
+            navigation.reset({
+                index: 0,
+                routes: [{ name: 'Onboarding' }],
+            });
         } catch (error) {
             console.error('Failed to reset onboarding:', error);
         }
