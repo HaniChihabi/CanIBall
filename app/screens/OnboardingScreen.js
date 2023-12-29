@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, StyleSheet, Dimensions, SafeAreaView, Button, TouchableOpacity } from 'react-native';
+import { View, Text, LogBox, TextInput, StyleSheet, Dimensions, SafeAreaView, Button, TouchableOpacity } from 'react-native';
 import Onboarding from 'react-native-onboarding-swiper';
 import LottieView from 'lottie-react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -7,6 +7,8 @@ import { Picker } from '@react-native-picker/picker';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTranslation } from 'react-i18next';
+import * as Haptics from 'expo-haptics';
+
 
 export default function OnboardingScreen() {
     const navigation = useNavigation();
@@ -32,7 +34,7 @@ const LanguageOptions = [
     { label: t('Spanish'), value: 'es' },
     { label: t('Swedish'), value: 'sv' },
     // ... add other languages
-];
+];   
 
     // Fetching city suggestions for search bar
     const fetchSuggestions = async (input) => {
@@ -58,6 +60,9 @@ const LanguageOptions = [
         } 
     }
 
+    LogBox.ignoreLogs(['Sending `onAnimatedValueUpdate` with no listeners registered.']);
+
+
     // Enter the city name, store it & send it to homescreen
     const handleSearch = async () => {
             // Validate the input
@@ -69,12 +74,13 @@ const LanguageOptions = [
             try {
                     storeData();
                     await AsyncStorage.setItem('onboardingCompleted', 'true');
-                    navigation.removeListener
                     navigation.navigate('Home', { selectedCity: cityName });
                 } catch (error) {
+                
                 alert(t('An error occurred. Please try again later.'));
             }
         }
+                    navigation.removeListener
 
     // Storing data function
     const storeData = async () => {
@@ -91,6 +97,7 @@ const LanguageOptions = [
             <Onboarding
                 skipLabel={''}
                 onDone={()=> {
+                    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)        
                     handleSearch();
                 }}
                 // Page1
@@ -102,6 +109,8 @@ const LanguageOptions = [
                                     <View style={styles.page1}>
                                         <Text style={[styles.title, { fontSize: 70 }]}>Can I Ball</Text>
                                         <Text style={styles.subtitle}>{t('Lets see what the weather says!')}</Text>
+                                        
+                                        
                                     </View>
                                     <LottieView
                                         source={require('../assets/ConfettiAnimation.json')}

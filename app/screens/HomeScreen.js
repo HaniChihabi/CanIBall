@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions, LogBox } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import LottieView from 'lottie-react-native';
 import { useRoute, useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTranslation } from 'react-i18next';
+import * as Haptics from 'expo-haptics';
 
 
 
@@ -51,11 +52,11 @@ function HomeScreen({ navigation }) {
                 // Handle cases where no data is returned for the city
                 setWeather(null);
                 alert(t('No weather data found for the city. Please try another city.'));
+                
             }
         } catch (error) {
             // Handle network or other errors gracefully
             alert(t('Failed to fetch weather data. Please try again.'));
-            setWeather(null);
         }
     };
 
@@ -163,11 +164,17 @@ function HomeScreen({ navigation }) {
         };   
     };
 
+    LogBox.ignoreLogs(['Sending `onAnimatedValueUpdate` with no listeners registered.']);
+
+
     // Mentalitybutton
     const ToggleButton = () => (
         <TouchableOpacity 
             style={styles.toggleButton}
-            onPress={() => setIsMentalitybutton(prevState => !prevState)}
+            onPress={() => {
+                setIsMentalitybutton(prevState => !prevState);
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)        
+            }}
             >
             <Text>{isMentalitybutton ? t('Keep Going') : t('Stop crying')}</Text>
         </TouchableOpacity>
@@ -189,6 +196,7 @@ function HomeScreen({ navigation }) {
                 index: 0,
                 routes: [{ name: 'Onboarding' }],
             });
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy)
         } catch (error) {
             console.error('Failed to reset onboarding:', error);
         }
@@ -227,7 +235,10 @@ function HomeScreen({ navigation }) {
                 </View>
             )}
             {/* Reset button */}
-            <TouchableOpacity onPress={handleReset} style={styles.resetButton}>
+            <TouchableOpacity onPress={()=> {
+                Haptics.NotificationFeedbackType.Error     
+                handleReset();
+                }} style={styles.resetButton}>
                 <Text>{t("reset")}</Text>
             </TouchableOpacity>
         </SafeAreaView>

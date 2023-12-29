@@ -15,13 +15,16 @@ const LoadingScreen = () => {
                     // Retrieve city name
                     const storedCityName = await AsyncStorage.getItem('city');
                     // Navigate to the Home screen and pass the city name
+                    navigation.removeListener
                     navigation.replace('Home', { selectedCity: storedCityName });
                 } else {
                     // If onboarding is not completed, navigate to the Onboarding screen
+                    navigation.removeListener
                     navigation.replace('Onboarding');
                 }
             } catch (error) {
                 // Handle errors, navigate to Onboarding as a safe default
+                navigation.removeListener
                 navigation.replace('Onboarding');
             }
         };
