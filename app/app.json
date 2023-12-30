@@ -15,16 +15,23 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.hanichihabi.app"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/CanIBallIcon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.hanichihabi.app"
     },
     "web": {
       "favicon": "./assets/CanIBallIcon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "2add7340-1502-486c-bbae-fc17305154eb"
+      }
     }
   }
 }

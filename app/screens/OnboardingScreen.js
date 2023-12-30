@@ -14,7 +14,6 @@ export default function OnboardingScreen() {
     const navigation = useNavigation();
     const [cityName, setCityName] = useState('');
     const [suggestions, setSuggestions] = useState([]);
-
     const {t, i18n } = useTranslation();
     const handleLanguageChange = (language) => {
         i18n.changeLanguage(language);
@@ -22,10 +21,9 @@ export default function OnboardingScreen() {
       };
 
 const LanguageOptions = [
-    { label: t('Languages'), value: 'ln' },   
+    { label: t('English'), value: 'en' },
     { label: t('Araby'), value: 'ar' },
     { label: t('Chinese'), value: 'ch' },
-    { label: t('English'), value: 'en' },
     { label: t('French'), value: 'fr' },
     { label: t('German'), value: 'de' },
     { label: t('Japanese'), value: 'jp' },
@@ -258,7 +256,7 @@ const styles = StyleSheet.create({
   },
 // Titles
   title: {
-    fontSize: 40,
+    fontSize: 50,
     textAlign: 'center',
     color: 'white',
     fontWeight: 'bold',
@@ -300,7 +298,7 @@ containerInput: {
     justifyContent: 'center',
     padding: 20,
     position: 'relative',
-    top:20,
+    top: 10,
 },
 input: {
     width: 280,
