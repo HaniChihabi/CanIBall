@@ -144,8 +144,6 @@ const LanguageOptions = [
                                     <View style={styles.page1}>
                                         <Text style={[styles.title, { fontSize: 70 }]}>Can I Ball</Text>
                                         <Text style={styles.subtitle}>{t('Lets see what the weather says!')}</Text>
-                                        
-                                        
                                     </View>
                                     <LottieView
                                         source={require('../assets/ConfettiAnimation.json')}
@@ -244,7 +242,7 @@ const styles = StyleSheet.create({
 // page-contents
   page1:{
     position: 'relative',
-    top: 100
+    top: 80
   },
   page2:{
     position: 'relative',
@@ -279,7 +277,7 @@ const styles = StyleSheet.create({
     width: 400,
     alignSelf: 'center',
     position: 'relative',
-    bottom: 0,
+    bottom: 50,
 },
 suggestionsContainer: {
     backgroundColor: 'white',

@@ -32,8 +32,8 @@ i18n
       ch: { translation: ch },
       rs: { translation: rs },
     },
-    lng: 'en',
-    fallbackLng: 'en',
+    lng: 'ln',
+    fallbackLng: 'ln',
     interpolation: { escapeValue: false },
   });
 
