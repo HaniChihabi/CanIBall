@@ -64,35 +64,39 @@ const LanguageOptions = [
     LogBox.ignoreLogs(['Sending `onAnimatedValueUpdate` with no listeners registered.']);
 
 
-    // Enter the city name, store it & send it to homescreen
     const handleSearch = async () => {
         // Validate the input
         if (cityName.trim() === '') {
+            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
             alert(t('Please enter a city name'));
-            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
             return;
         }
     
-        // Check if the entered city is in the list of suggestions
-        if (!suggestions.includes(cityName)) {
-            alert(t('Please enter a valid city name'));
-            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
-            return;
-        }
-    
-        // Store data and send city name to homescreen
         try {
-            await AsyncStorage.setItem('city', cityName);
-            navigation.navigate('Home', { selectedCity: cityName });
-            await AsyncStorage.setItem('onboardingCompleted', 'true');
-            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+            // API call to validate the city name
+            const apiKey = '294249189d29841b5a3b8791204c6411'; // Replace with your actual API key
+            const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}`);
+            const data = await response.json();
+    
+            // Check if the response is valid for the entered city name
+            if (data.cod === 200) {
+                // If the city name is valid, store the data and navigate to the HomeScreen 
+                Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+                await AsyncStorage.setItem('city', cityName);
+                navigation.navigate('Home', { selectedCity: cityName });
+                await AsyncStorage.setItem('onboardingCompleted', 'true');
+            } else {
+                Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+                // If the city name is invalid
+                alert(t('Please enter a valid city name'));
+                
+            }
         } catch (error) {
+            console.error('Error while validating city name:', error);
             Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
-            alert(t('An error occurred. Please try again later.'));
-            navigation.navigate('Onboarding');
+            alert(t('An error occurred while validating the city name. Please try again.'));
         }
     };
-
     return (
         <View style={styles.container}>
             <Onboarding
