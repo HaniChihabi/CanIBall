@@ -7,10 +7,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
 
-
-
-
-
 const { width } = Dimensions.get('window');
 
 function HomeScreen({ navigation }) {
@@ -52,7 +48,6 @@ function HomeScreen({ navigation }) {
                 // Handle cases where no data is returned for the city
                 setWeather(null);
                 alert(t('No weather data found for the city. Please try another city.'));
-                
             }
         } catch (error) {
             // Handle network or other errors gracefully
@@ -190,6 +185,7 @@ function HomeScreen({ navigation }) {
         try {
             // Reset the onboardingCompleted flag in AsyncStorage
             await AsyncStorage.setItem('onboardingCompleted', 'false');
+            await AsyncStorage.setItem('desiredOnboardingPageIndex', '2'); // Store the desired page index
             console.log('Onboarding reset successful');
             // Navigate to the OnboardingScreen
             navigation.reset({
