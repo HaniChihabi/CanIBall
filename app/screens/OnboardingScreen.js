@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, LogBox, TextInput, StyleSheet, Dimensions, SafeAreaView, Button, TouchableOpacity } from 'react-native';
+
+// ================= IMPORTS ===============
+import React, { useState } from 'react';
+import { View, Text, LogBox, TextInput, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native';
 import Onboarding from 'react-native-onboarding-swiper';
 import LottieView from 'lottie-react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -9,31 +11,37 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
 
+// =================== CODE =================
 
 export default function OnboardingScreen() {
+
+    LogBox.ignoreLogs(['Sending `onAnimatedValueUpdate` with no listeners registered.']);
+
+    // defaults
     const navigation = useNavigation();
     const [cityName, setCityName] = useState('');
     const [suggestions, setSuggestions] = useState([]);
+
+    // for translation
     const {t, i18n } = useTranslation();
     const handleLanguageChange = (language) => {
         i18n.changeLanguage(language);
         AsyncStorage.setItem('appLanguage', language);
       };
 
-const LanguageOptions = [
-    { label: t('English'), value: 'en' },
-    { label: t('Araby'), value: 'ar' },
-    { label: t('Chinese'), value: 'ch' },
-    { label: t('French'), value: 'fr' },
-    { label: t('German'), value: 'de' },
-    { label: t('Japanese'), value: 'jp' },
-    { label: t('Kurdish'), value: 'kr' },
-    { label: t('Portuguese'), value: 'pt' },  
-    { label: t('Russian'), value: 'rs' },
-    { label: t('Spanish'), value: 'es' },
-    { label: t('Swedish'), value: 'sv' },
-    // ... add other languages
-];   
+    const LanguageOptions = [
+        { label: t('English'), value: 'en' },
+        { label: t('Araby'), value: 'ar' },
+        { label: t('Chinese'), value: 'ch' },
+        { label: t('French'), value: 'fr' },
+        { label: t('German'), value: 'de' },
+        { label: t('Japanese'), value: 'jp' },
+        { label: t('Kurdish'), value: 'kr' },
+        { label: t('Portuguese'), value: 'pt' },  
+        { label: t('Russian'), value: 'rs' },
+        { label: t('Spanish'), value: 'es' },
+        { label: t('Swedish'), value: 'sv' },
+    ];   
 
     // Fetching city suggestions for search bar
     const fetchSuggestions = async (input) => {
@@ -59,9 +67,7 @@ const LanguageOptions = [
         } 
     }
 
-    LogBox.ignoreLogs(['Sending `onAnimatedValueUpdate` with no listeners registered.']);
-
-
+    // for searching city (button)
     const handleSearch = async () => {
         // Validate the input
         if (cityName.trim() === '') {
@@ -95,6 +101,9 @@ const LanguageOptions = [
             alert(t('An error occurred while validating the city name. Please try again.'));
         }
     };
+
+    // =================== UI =======================
+
     return (
         <View style={styles.container}>
             <Onboarding
@@ -210,103 +219,104 @@ const LanguageOptions = [
     );
 }
 
+// ================= STYLES ==================
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
-    color: "black"
-  },
-// lotties
-  lottie1: {
-    width: 200,
-    height: 200,
-    position: 'relative',
-    top: 70,
-    alignSelf: 'center',
-  },
-  lottie2: {
-    width: 400,
-    height: 200,
-    alignSelf: 'center',
-    position: 'relative',
-    top: 53,
-  },
-  lottie3: {
-    width: 400,
-    height: 300,
-    alignSelf: 'center',
-    position: 'relative',
-    top: 53,
-  },
-// page-contents
-  page1:{
-    position: 'relative',
-    top: 80
-  },
-  page2:{
-    position: 'relative',
-    bottom: 0,
-  },
-  page3:{
-    position: 'relative',
-    bottom: 65
-  },
-// Titles
-  title: {
-    fontSize: 50,
-    textAlign: 'center',
-    color: 'white',
-    fontWeight: 'bold',
-    marginTop: 15,
-  },
-  subtitle: {
-    fontSize: 20,
-    textAlign: 'center',
-    color: 'white',    fontWeight: 'bold',
-    marginTop: 10,
-  },
-  doneButton: {
-    padding: 20,
-    backgroundColor: 'white',
-    borderTopLeftRadius: '100%',
-    borderBottomLeftRadius: '100%',
-  },
-  pickerStyle: {
-    marginTop: 50,
-    width: 400,
-    alignSelf: 'center',
-    position: 'relative',
-    bottom: 50,
-},
-suggestionsContainer: {
-    backgroundColor: 'white',
-    width: '100%',
-    position: 'absolute',
-    top: 60, 
-    zIndex: 1, 
-},
-suggestionItem: {
-    padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
-},
-containerInput: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
-    position: 'relative',
-    top: 10,
-},
-input: {
-    width: 280,
-    padding: 10,
-    marginBottom: 20,
-    borderRadius: 5,
-},
-button: {
-    height:100,
-    width: 100
-}
+    container: {
+        flex: 1,
+        backgroundColor: 'white',
+        color: "black"
+    },
+    // lotties
+    lottie1: {
+        width: 200,
+        height: 200,
+        position: 'relative',
+        top: 70,
+        alignSelf: 'center',
+    },
+    lottie2: {
+        width: 300,
+        height: 200,
+        alignSelf: 'center',
+        position: 'relative',
+        top: 0.05, // Adjust this value as needed
+    },
+    lottie3: {
+        width: 400,
+        height: 300,
+        alignSelf: 'center',
+        position: 'relative',
+        top: 53,
+    },
+    // page-contents
+    page1:{
+        position: 'relative',
+        top: 80
+    },
+    page2:{
+        position: 'relative',
+        bottom: 0,
+    },
+    page3:{
+        position: 'relative',
+        bottom: 65
+    },
+    // Titles
+    title: {
+        fontSize: 50,
+        textAlign: 'center',
+        color: 'white',
+        fontWeight: 'bold',
+        marginTop: 15,
+    },
+    subtitle: {
+        fontSize: 20,
+        textAlign: 'center',
+        color: 'white',    fontWeight: 'bold',
+        marginTop: 10,
+    },
+    doneButton: {
+        padding: 20,
+        backgroundColor: 'white',
+        borderTopLeftRadius: '100%',
+        borderBottomLeftRadius: '100%',
+    },
+    pickerStyle: {
+        marginTop: 50,
+        width: 400,
+        alignSelf: 'center',
+        position: 'relative',
+        bottom: 50,
+    },
+    suggestionsContainer: {
+        backgroundColor: 'white',
+        width: '100%',
+        position: 'absolute',
+        top: 60, 
+        zIndex: 1, 
+    },
+    suggestionItem: {
+        padding: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: '#ddd',
+    },
+    containerInput: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 20,
+        position: 'relative',
+        top: 10,
+    },
+    input: {
+        width: 280,
+        padding: 10,
+        marginBottom: 20,
+        borderRadius: 5,
+    },
+    button: {
+        height:100,
+        width: 100
+    }
   
 });
