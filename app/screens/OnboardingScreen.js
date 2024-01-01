@@ -62,7 +62,7 @@ export default function OnboardingScreen() {
                 setSuggestions(cities);
                 console.log("From fetch suggestions:", cities);
             } catch (error) {
-                setSuggestions([]);
+                setSuggestions([]); 
             }
         } 
     }
@@ -114,7 +114,7 @@ export default function OnboardingScreen() {
                 // Page1
                 pages={[// Page2
                     {
-                        backgroundColor: '#a78bfa',
+                        backgroundColor: '# ',
                         image: (
                             <SafeAreaView style={styles.container3}>
                                     <View style={styles.page2}>
