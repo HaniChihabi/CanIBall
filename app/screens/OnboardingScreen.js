@@ -125,15 +125,14 @@ export default function OnboardingScreen() {
                                     selectedValue={i18n.language}
                                     onValueChange={(itemValue) => {
                                         handleLanguageChange(itemValue);
-                                        
                                     }}
                                     style={styles.pickerStyle}
-                                    itemStyle={{ fontWeight: 'bold', fontSize: '40'}} // Not consistently supported
+                                    itemStyle={{ fontWeight: 'bold', fontSize: 40, width: 200, height: 50 }} // Not consistently supported
                                 >
                                     {LanguageOptions.map((lang, index) => (
                                         <Picker.Item key={index} label={lang.label} value={lang.value} color= "white" 
                                         />
-                                    ))}
+                                    ))} 
                                 </Picker>
                                     <LottieView
                                         source={require('../assets/NewLanguagesAnimation.json')}

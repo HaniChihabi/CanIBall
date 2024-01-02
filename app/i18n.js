@@ -19,18 +19,7 @@ i18n
   .use(initReactI18next)
   .init({
     resources: {
-      ln: { translation: ln },   
-      de: { translation: de },
-      en: { translation: en },
-      es: { translation: es },
-      fr: { translation: fr },
-      pt: { translation: pt },
-      sv: { translation: sv },
-      ar: { translation: ar },
-      kr: { translation: kr },
-      jp: { translation: jp },
-      ch: { translation: ch },
-      rs: { translation: rs },
+        eV
     },
     lng: 'ln',
     fallbackLng: 'ln',

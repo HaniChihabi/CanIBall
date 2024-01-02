@@ -7,22 +7,22 @@ import { createStackNavigator } from '@react-navigation/stack';
 import LoadingScreen from './screens/LoadingScreen';
 import HomeScreen from './screens/HomeScreen';
 import OnboardingScreen from './screens/OnboardingScreen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const Stack = createStackNavigator();
 
-
 export default function App() {
 
-        // useEffect(() => {
-        //   const setLanguage = async () => {
-        //     const language = await AsyncStorage.getItem('appLanguage');
-        //     if (language) {
-        //       i18n.changeLanguage(language);
-        //     }
-        //   };
-        //   setLanguage();
-        // }, []);
+         useEffect(() => {
+           const setLanguage = async () => {
+             const language = await AsyncStorage.getItem('appLanguage');
+             if (language) {
+               i18n.changeLanguage(language);
+             }
+           };
+           setLanguage();
+         }, []);
       
         // ...
     return (
