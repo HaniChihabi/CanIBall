@@ -1,5 +1,5 @@
 // ==================== IMPORTS ====================
-
+import React, { useState } from 'react';
 import { SafeAreaView, View, Text, StyleSheet, Dimensions, TextInput} from "react-native"
 import { Picker } from '@react-native-picker/picker';
 import Onboarding from 'react-native-onboarding-swiper';
@@ -19,6 +19,67 @@ const { width, height } = Dimensions.get('window');
 // for translation
 const {t, i18n } = useTranslation();
 const navigation = useNavigation(); // Use the useNavigation hook here
+const [suggestions, setSuggestions] = useState([]);
+const [cityName, setCityName] = useState('');
+
+
+// Fetching city suggestions for search bar
+const fetchSuggestions = async (input) => {
+    if (input.length > 0) {
+        try {
+            setSuggestions([]);
+            const options= {
+                method: 'GET',
+                    url: 'https://wft-geo-db.p.rapidapi.com/v1/geo/cities',
+                    params: { namePrefix: input, minPopulation: 10000, limit: 5 },
+                    headers: {
+                        'X-RapidAPI-Host': 'wft-geo-db.p.rapidapi.com',
+                        'X-RapidAPI-Key': 'e88ee664bdmshad6c6505a38d94cp144614jsndeb85cd45b61' 
+                    }
+            };
+            const response = await axios.request(options);
+            const cities = response.data.data.map(city => `${city.name}, ${city.countryCode}`);
+            setSuggestions(cities);
+            console.log("From fetch suggestions:", cities);
+        } catch(error) {
+            setSuggestions([]);
+        }
+    }
+};
+
+const handlesearch = async() => {
+    // Validate the input
+    if (cityName.trim() === '') {
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+        alert(t('Please enter a city name'));
+        return;
+    }
+    
+    try{
+    // API call to validate the city name
+    const apiKey = '294249189d29841b5a3b8791204c6411';
+    const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}`);
+    const data = await response.json();
+
+    // Check if the response is valid for the entered city name
+    if (data.cod === 200) {
+        // If the city name is valid, store the data and navigate to the HomeScreen 
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+        await AsyncStorage.setItem('city', cityName);
+        console.log("stored that city", cityName)
+        await AsyncStorage.setItem('onboardingCompleted', 'true');
+    } else {
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+        // If the city name is invalid
+        alert(t('Please enter a valid city name'));
+    }
+
+    } catch (error) {
+        console.error('Error while validating city name:', error);
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+        alert(t('An error occurred while validating the city name. Please try again.'));
+    }
+}
 
 const handleLanguageChange = (language) => {
     i18n.changeLanguage(language);
@@ -26,9 +87,10 @@ const handleLanguageChange = (language) => {
   };
 const LanguageOptions= [
     {label: t('Languages'), value: 'lng'},
-    {label: t('English'), value: 'en'},
+    
     { label: t('Araby'), value: 'ar' },
     { label: t('Chinese'), value: 'ch' },
+    {label: t('English'), value: 'en'},
     { label: t('French'), value: 'fr' },
     { label: t('German'), value: 'de' },
     { label: t('Japanese'), value: 'jp' },
@@ -83,6 +145,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         color: 'white',
         zIndex: 1000,
+        fontSize: 50
     },   
     // ======== picker ========
 
@@ -90,7 +153,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         width: width * 1,
         alignSelf: 'center',
-        top: '30%',
+        top: '50%',
         
     },
     // ======== searchbar ========
@@ -116,7 +179,7 @@ const styles = StyleSheet.create({
             <Onboarding
             skipLabel={''}
             onDone={()=> { 
-                navigation.navigate("Home")
+                handlesearch()
             }}
             //Page1
             pages={[
