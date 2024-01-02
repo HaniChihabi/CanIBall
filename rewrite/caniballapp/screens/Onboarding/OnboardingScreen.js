@@ -39,8 +39,8 @@ const LanguageOptions= [
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'white',
-        color: "black"
+        color: "black",
+        top: '0%',
     },
     lottie: {
         position: 'absolute',
@@ -51,34 +51,38 @@ const styles = StyleSheet.create({
         width: width * 0.7,
         height: height * 0.22,
         alignSelf: 'center',
-        top: '57%',
+        top: '100%',
     },
     lottie2: {
         width: width * 0.2, 
         height: height * 0.22,
         alignSelf: 'center',
-        top: '50%',
+        top: '100%',
     },
     lottie3: {
         width: width * 0.7,
         height: height * 0.3,
         alignSelf: 'center',
-        top: '34%',
-    },
-    titles: {
-        position: 'absolute',
-        bottom: '20%', // Adjust this to move text up or down
-        alignSelf: 'center',
-        alignItems: 'center',
-        color: 'white'
+        top: '62%',
     },
     title: {
-        color: 'white'
+        color: 'white',
+        alignSelf: 'center',
+        top: '40%',
     },
+    languageTitle: {
+        top: '20%', // Adjust this to move text up or down
+        alignSelf: 'center',
+        alignItems: 'center',
+        color: 'white',
+        zIndex: 1000,
+    },    
     pickerStyle: {
+        position: 'absolute',
         width: width * 1,
         alignSelf: 'center',
-        bottom: '50%',
+        top: '30%',
+        
     },
     
 });
@@ -87,7 +91,7 @@ const styles = StyleSheet.create({
 // ==================== UI ====================
 
     return (
-        <View style={styles.container}>
+        
             <Onboarding
             skipLabel={''}
             onDone={()=> { 
@@ -96,9 +100,12 @@ const styles = StyleSheet.create({
             //Page1
             pages={[
                 {
+                    
                     backgroundColor:'#a78bfa',
                     image: (
                         <SafeAreaView>
+                            <View style={styles.container}>
+                                    <Text style={styles.languageTitle}>{t('Language')}</Text>
                             <Picker
                                 selectedValue={i18n.language}
                                 onValueChange={(itemValue) => {
@@ -120,7 +127,9 @@ const styles = StyleSheet.create({
                                     style={styles.lottie1}
                                 /> 
                             </View>
+                            </View>
                         </SafeAreaView>
+                        
                     ),
                     title: '',
                     subtitle: '',
@@ -129,16 +138,18 @@ const styles = StyleSheet.create({
                     backgroundColor:'#a78bfa',
                     image: (
                         <SafeAreaView>
-                            <View style={styles.titles}>
+                            <View style={styles.container}>
                                 <Text style={[styles.title, {fontWeight: 'bold', fontSize: 70}]}>Can I Ball</Text>
-                                <Text style={styles.title}>{"Let's see what the weather says!"}</Text>
-                            </View>
+                                <Text style={styles.title}>{t('Lets see what the weather says!')}</Text>
+                            <View style={styles.lottie}>
                             <LottieView
                                         source={require('../../assets/ConfettiAnimation.json')}
                                         autoPlay
                                         loop
                                         style={styles.lottie2}
                                     /> 
+                            </View>    
+                            </View>
                         </SafeAreaView>
                     ),
                     title: '',
@@ -148,12 +159,16 @@ const styles = StyleSheet.create({
                     backgroundColor:'#a78bfa',
                     image: (
                         <SafeAreaView>
+                            <View style={styles.container}>
+                            <View style={styles.lottie}>
                             <LottieView
                                         source={require('../../assets/CityAnimation.json')}
                                         autoPlay
                                         loop
                                         style={styles.lottie3}
                                     /> 
+                            </View>
+                            </View>
                         </SafeAreaView>
                     ),
                     title: '',
@@ -161,7 +176,7 @@ const styles = StyleSheet.create({
                 },
             ]}
             />
-        </View>
+        
     )
 
     
