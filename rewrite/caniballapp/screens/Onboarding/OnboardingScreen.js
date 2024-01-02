@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
     lottie: {
         position: 'absolute',
         alignSelf: 'center',
+        zIndex: -1000,
     },
     lottie1: {
         width: width * 0.7,
@@ -66,7 +67,7 @@ const styles = StyleSheet.create({
     },
     titles: {
         position: 'absolute',
-        top: '45%', // Adjust this to move text up or down
+        bottom: '20%', // Adjust this to move text up or down
         alignSelf: 'center',
         alignItems: 'center',
         color: 'white'
@@ -75,11 +76,9 @@ const styles = StyleSheet.create({
         color: 'white'
     },
     pickerStyle: {
-        marginTop: 50,
-        width: 400,
+        width: width * 1,
         alignSelf: 'center',
-        position: 'relative',
-        bottom: 50,
+        bottom: '50%',
     },
     
 });
@@ -106,7 +105,7 @@ const styles = StyleSheet.create({
                                     handleLanguageChange(itemValue);
                                 }}
                                 style={styles.pickerStyle}
-                                itemStyle={{fontWeight: 'bold', fontSize: 40}}
+                                itemStyle={{ fontSize: 40}}
                                 > 
                                     {LanguageOptions.map((lang, index) =>(
                                         <Picker.Item key={index} label={lang.label} value={lang.value} color = 'white'
@@ -131,7 +130,7 @@ const styles = StyleSheet.create({
                     image: (
                         <SafeAreaView>
                             <View style={styles.titles}>
-                                <Text style={[styles.title, {fontSize: 70}]}>Can I Ball</Text>
+                                <Text style={[styles.title, {fontWeight: 'bold', fontSize: 70}]}>Can I Ball</Text>
                                 <Text style={styles.title}>{"Let's see what the weather says!"}</Text>
                             </View>
                             <LottieView
