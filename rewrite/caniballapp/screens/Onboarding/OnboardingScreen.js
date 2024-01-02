@@ -1,11 +1,13 @@
 // ==================== IMPORTS ====================
 
-import { SafeAreaView, View, Text, StyleSheet, Dimensions} from "react-native"
+import { SafeAreaView, View, Text, StyleSheet, Dimensions, TextInput} from "react-native"
 import { Picker } from '@react-native-picker/picker';
 import Onboarding from 'react-native-onboarding-swiper';
 import LottieView from 'lottie-react-native';
 import { useTranslation } from "react-i18next";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from '@react-navigation/native';
+
 
 
 
@@ -16,6 +18,8 @@ export default function OnboardingScreen() {
 const { width, height } = Dimensions.get('window');
 // for translation
 const {t, i18n } = useTranslation();
+const navigation = useNavigation(); // Use the useNavigation hook here
+
 const handleLanguageChange = (language) => {
     i18n.changeLanguage(language);
     AsyncStorage.setItem('appLanguage', language);
@@ -42,6 +46,7 @@ const styles = StyleSheet.create({
         color: "black",
         top: '0%',
     },
+// ======== lottie ========
     lottie: {
         position: 'absolute',
         alignSelf: 'center',
@@ -65,6 +70,8 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         top: '62%',
     },
+
+    // ======== titles ========
     title: {
         color: 'white',
         alignSelf: 'center',
@@ -76,7 +83,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         color: 'white',
         zIndex: 1000,
-    },    
+    },   
+    // ======== picker ========
+
     pickerStyle: {
         position: 'absolute',
         width: width * 1,
@@ -84,6 +93,18 @@ const styles = StyleSheet.create({
         top: '30%',
         
     },
+    // ======== searchbar ========
+
+    containerInput: {
+        alignItems: 'center',
+        top : '10%',
+    },
+    input: {
+        width: width * 0.6,
+        padding: 10,
+        borderRadius: 5,
+    }
+
     
 });
 
@@ -95,7 +116,7 @@ const styles = StyleSheet.create({
             <Onboarding
             skipLabel={''}
             onDone={()=> { 
-                handleSearch();
+                navigation.navigate("Home")
             }}
             //Page1
             pages={[
@@ -160,6 +181,13 @@ const styles = StyleSheet.create({
                     image: (
                         <SafeAreaView>
                             <View style={styles.container}>
+                                <View style={styles.containerInput}>
+                                    <TextInput
+                                    style={[styles.input, {backgroundColor: 'white'}]}
+                                    placeholder={t("Enter city name")}
+                                    >
+                                    </TextInput>
+                                </View>
                             <View style={styles.lottie}>
                             <LottieView
                                         source={require('../../assets/CityAnimation.json')}

@@ -7,6 +7,8 @@ import i18n from './i18n/i18n'; // Import your i18n configuration
 // Import the necessary modules
 import { createStackNavigator } from '@react-navigation/stack';
 import OnboardingScreen from './screens/Onboarding/OnboardingScreen';
+import HomeScreen from './screens/Home/HomeScreen';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
@@ -38,6 +40,8 @@ export default function App() {
         <NavigationContainer>
             <Stack.Navigator initialRouteName="Onboarding">
             <Stack.Screen name="Onboarding" component={OnboardingScreen} options={{ headerShown: false }} />
+            <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
+
             </Stack.Navigator>
         </NavigationContainer>
     );
