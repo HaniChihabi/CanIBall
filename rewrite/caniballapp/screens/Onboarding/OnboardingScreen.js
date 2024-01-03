@@ -1,13 +1,14 @@
 // ==================== IMPORTS ====================
 import React, { useState } from 'react';
-import { SafeAreaView, View, Text, StyleSheet, Dimensions, TextInput} from "react-native"
+import { SafeAreaView, View, Text, StyleSheet, Dimensions, TextInput, TouchableOpacity} from "react-native"
 import { Picker } from '@react-native-picker/picker';
 import Onboarding from 'react-native-onboarding-swiper';
 import LottieView from 'lottie-react-native';
 import { useTranslation } from "react-i18next";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from '@react-navigation/native';
-
+import * as Haptics from 'expo-haptics'
+import axios from 'axios';
 
 
 
@@ -68,6 +69,8 @@ const handlesearch = async() => {
         await AsyncStorage.setItem('city', cityName);
         console.log("stored that city", cityName)
         await AsyncStorage.setItem('onboardingCompleted', 'true');
+        navigation.navigate('Home', { selectedCity: cityName });
+
     } else {
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
         // If the city name is invalid
@@ -90,7 +93,7 @@ const LanguageOptions= [
     
     { label: t('Araby'), value: 'ar' },
     { label: t('Chinese'), value: 'ch' },
-    {label: t('English'), value: 'en'},
+    { label: t('English'), value: 'en'},
     { label: t('French'), value: 'fr' },
     { label: t('German'), value: 'de' },
     { label: t('Japanese'), value: 'jp' },
@@ -146,7 +149,13 @@ const styles = StyleSheet.create({
         color: 'white',
         zIndex: 1000,
         fontSize: 50
-    },   
+    },
+    cityTitle: {
+        alignSelf: 'center',
+        color: 'white',
+        fontSize: 30,
+        margin: 10
+    },
     // ======== picker ========
 
     pickerStyle: {
@@ -154,7 +163,7 @@ const styles = StyleSheet.create({
         width: width * 1,
         alignSelf: 'center',
         top: '50%',
-        
+        fontSize: 40
     },
     // ======== searchbar ========
 
@@ -166,7 +175,14 @@ const styles = StyleSheet.create({
         width: width * 0.6,
         padding: 10,
         borderRadius: 5,
-    }
+    },
+    suggestionsContainer: {
+        backgroundColor: 'white',
+        width: '100%',
+    },
+    suggestionItem: {
+        padding: 10
+    },
 
     
 });
@@ -196,7 +212,10 @@ const styles = StyleSheet.create({
                                     handleLanguageChange(itemValue);
                                 }}
                                 style={styles.pickerStyle}
-                                itemStyle={{ fontSize: 40}}
+                                value={cityName}
+                                onChangeText={(text) => {
+                                    setCityName(text);
+                                }}
                                 > 
                                     {LanguageOptions.map((lang, index) =>(
                                         <Picker.Item key={index} label={lang.label} value={lang.value} color = 'white'
@@ -244,12 +263,37 @@ const styles = StyleSheet.create({
                     image: (
                         <SafeAreaView>
                             <View style={styles.container}>
+                                
                                 <View style={styles.containerInput}>
+                                <Text style={styles.cityTitle}>City</Text>
+                                    {/* Searchbar */}
                                     <TextInput
-                                    style={[styles.input, {backgroundColor: 'white'}]}
-                                    placeholder={t("Enter city name")}
+                                        style={[styles.input, {backgroundColor: 'white'}]}
+                                        placeholder={t("Enter city name")}
+                                        value={cityName}
+                                        onChangeText= {(text) => {
+                                            setCityName(text);
+                                            fetchSuggestions(text)
+                                        }}
                                     >
                                     </TextInput>
+
+                                    {/* Fetching suggestions */}
+                                    {suggestions.length > 0 &&(
+                                        <View style={styles.suggestionsContainer}>
+                                            {suggestions.map((suggestion, index) =>(
+                                                <TouchableOpacity
+                                                    key= {index}
+                                                    onPress={() => {
+                                                        setCityName(suggestion);
+                                                        setSuggestions([])
+                                                    }}
+                                                    >
+                                                    <Text style={styles.suggestionItem}>{suggestion}</Text>
+                                                </TouchableOpacity>
+                                            ))}
+                                        </View>
+                                    )}
                                 </View>
                             <View style={styles.lottie}>
                             <LottieView
