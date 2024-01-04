@@ -16,15 +16,16 @@ import axios from 'axios';
 
 export default function OnboardingScreen() {
 
+
+// ======== Defaults ========
 const { width, height } = Dimensions.get('window');
-// for translation
 const {t, i18n } = useTranslation();
 const navigation = useNavigation(); // Use the useNavigation hook here
 const [suggestions, setSuggestions] = useState([]);
 const [cityName, setCityName] = useState('');
 
-
-// Fetching city suggestions for search bar
+// 
+// ======== Fetching city suggestions for search bar ========
 const fetchSuggestions = async (input) => {
     if (input.length > 0) {
         try {
@@ -47,6 +48,8 @@ const fetchSuggestions = async (input) => {
         }
     }
 };
+
+// ======== Search button ========
 
 const handlesearch = async() => {
     // Validate the input
@@ -84,6 +87,7 @@ const handlesearch = async() => {
     }
 }
 
+// ======== Language ========
 const handleLanguageChange = (language) => {
     i18n.changeLanguage(language);
     AsyncStorage.setItem('appLanguage', language);
@@ -104,7 +108,7 @@ const LanguageOptions= [
     { label: t('Swedish'), value: 'sv' },
 ];
 
-// Stylesheet
+// ======== Stylesheet ========
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -153,7 +157,7 @@ const styles = StyleSheet.create({
     cityTitle: {
         alignSelf: 'center',
         color: 'white',
-        fontSize: 30,
+        fontSize: 50,
         margin: 10
     },
     // ======== picker ========
@@ -169,7 +173,7 @@ const styles = StyleSheet.create({
 
     containerInput: {
         alignItems: 'center',
-        top : '10%',
+        top : '20%',
     },
     input: {
         width: width * 0.6,
@@ -179,6 +183,7 @@ const styles = StyleSheet.create({
     suggestionsContainer: {
         backgroundColor: 'white',
         width: '100%',
+        borderRadius: 5,
     },
     suggestionItem: {
         padding: 10
@@ -200,7 +205,6 @@ const styles = StyleSheet.create({
             //Page1
             pages={[
                 {
-                    
                     backgroundColor:'#a78bfa',
                     image: (
                         <SafeAreaView>
