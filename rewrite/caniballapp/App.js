@@ -8,6 +8,8 @@ import i18n from './i18n/i18n'; // Import your i18n configuration
 import { createStackNavigator } from '@react-navigation/stack';
 import OnboardingScreen from './screens/Onboarding/OnboardingScreen';
 import HomeScreen from './screens/Home/HomeScreen';
+import LoadingScreen from './screens/Loading/LoadingScreen';
+
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -16,10 +18,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // ============== CODE ====================
 
 const Stack = createStackNavigator();
-
-
-
-
 export default function App() {
 
          useEffect(() => {
@@ -38,10 +36,10 @@ export default function App() {
 
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName="Onboarding">
-            <Stack.Screen name="Onboarding" component={OnboardingScreen} options={{ headerShown: false }} />
-            <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
-
+            <Stack.Navigator initialRouteName="Loading">
+              <Stack.Screen name="Loading" component={LoadingScreen} options={{headerShown: false}}/>
+              <Stack.Screen name="Onboarding" component={OnboardingScreen} options={{ headerShown: false }} />
+              <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
             </Stack.Navigator>
         </NavigationContainer>
     );

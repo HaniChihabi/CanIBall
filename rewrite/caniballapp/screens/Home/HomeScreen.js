@@ -3,6 +3,9 @@ import LottieView from 'lottie-react-native';
 import React, { useState, useEffect } from 'react';
 import { useRoute, useIsFocused } from '@react-navigation/native';
 import { useTranslation } from "react-i18next";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Haptics from 'expo-haptics'
+
 
 const { width, height } = Dimensions.get('window');
 
@@ -48,8 +51,13 @@ export default function HomeScreen({navigation}) {
     };
 
 
-    const handleReset= () => {
+    const handleReset= async () => {
         try {
+            await AsyncStorage.setItem('onboardingCompleted', 'false')
+            console.log('Onboarding reset successful');
+        
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy)
+            console.log('Onboarding set to false')
             navigation.reset({
                 index: 0,
                 routes:[{ name: 'Onboarding'}],
@@ -180,6 +188,8 @@ export default function HomeScreen({navigation}) {
                     style={styles.toggleButton}
                     onPress={() => {
                         setIsMentalitybutton(prevState => !prevState);
+                        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)        
+
                     }}>
                         <Text>{isMentalitybutton ? t('Keep Going') : t('Stop crying')}</Text>
                     </TouchableOpacity>
@@ -234,7 +244,7 @@ export default function HomeScreen({navigation}) {
             flexDirection: 'row',
             justifyContent: 'space-around',
             padding: 10,
-            top: '5%',
+            top: '15%',
         },
         card:{
             fontSize: 12,

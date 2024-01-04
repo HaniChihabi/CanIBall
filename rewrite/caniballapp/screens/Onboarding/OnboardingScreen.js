@@ -1,6 +1,6 @@
 // ==================== IMPORTS ====================
 import React, { useState } from 'react';
-import { SafeAreaView, View, Text, StyleSheet, Dimensions, TextInput, TouchableOpacity} from "react-native"
+import { SafeAreaView, View, LogBox, Text, StyleSheet, Dimensions, TextInput, TouchableOpacity} from "react-native"
 import { Picker } from '@react-native-picker/picker';
 import Onboarding from 'react-native-onboarding-swiper';
 import LottieView from 'lottie-react-native';
@@ -23,6 +23,8 @@ const {t, i18n } = useTranslation();
 const navigation = useNavigation(); // Use the useNavigation hook here
 const [suggestions, setSuggestions] = useState([]);
 const [cityName, setCityName] = useState('');
+
+LogBox.ignoreLogs(['Sending `onAnimatedValueUpdate` with no listeners registered.']);
 
 // 
 // ======== Fetching city suggestions for search bar ========
@@ -54,7 +56,7 @@ const fetchSuggestions = async (input) => {
 const handlesearch = async() => {
     // Validate the input
     if (cityName.trim() === '') {
-        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
         alert(t('Please enter a city name'));
         return;
     }
@@ -70,7 +72,6 @@ const handlesearch = async() => {
         // If the city name is valid, store the data and navigate to the HomeScreen 
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
         await AsyncStorage.setItem('city', cityName);
-        console.log("stored that city", cityName)
         await AsyncStorage.setItem('onboardingCompleted', 'true');
         navigation.navigate('Home', { selectedCity: cityName });
 
@@ -81,7 +82,6 @@ const handlesearch = async() => {
     }
 
     } catch (error) {
-        console.error('Error while validating city name:', error);
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
         alert(t('An error occurred while validating the city name. Please try again.'));
     }
