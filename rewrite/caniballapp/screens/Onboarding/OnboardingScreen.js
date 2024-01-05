@@ -10,23 +10,21 @@ import { useNavigation } from '@react-navigation/native';
 import * as Haptics from 'expo-haptics'
 import axios from 'axios';
 
+const { width, height } = Dimensions.get('window');
 
 
-// ==================== CODE ====================
 
 export default function OnboardingScreen() {
+// ==================== CODE ====================
 
 
 // ======== Defaults ========
-const { width, height } = Dimensions.get('window');
+LogBox.ignoreLogs(['Sending `onAnimatedValueUpdate` with no listeners registered.']);
 const {t, i18n } = useTranslation();
 const navigation = useNavigation(); // Use the useNavigation hook here
 const [suggestions, setSuggestions] = useState([]);
 const [cityName, setCityName] = useState('');
 
-LogBox.ignoreLogs(['Sending `onAnimatedValueUpdate` with no listeners registered.']);
-
-// 
 // ======== Fetching city suggestions for search bar ========
 const fetchSuggestions = async (input) => {
     if (input.length > 0) {
@@ -108,95 +106,11 @@ const LanguageOptions= [
     { label: t('Swedish'), value: 'sv' },
 ];
 
-// ======== Stylesheet ========
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        color: "black",
-        top: '0%',
-    },
-// ======== lottie ========
-    lottie: {
-        position: 'absolute',
-        alignSelf: 'center',
-        zIndex: -1000,
-    },
-    lottie1: {
-        width: width * 0.7,
-        height: height * 0.22,
-        alignSelf: 'center',
-        top: '100%',
-    },
-    lottie2: {
-        width: width * 0.2, 
-        height: height * 0.22,
-        alignSelf: 'center',
-        top: '100%',
-    },
-    lottie3: {
-        width: width * 0.7,
-        height: height * 0.3,
-        alignSelf: 'center',
-        top: '62%',
-    },
-
-    // ======== titles ========
-    title: {
-        color: 'white',
-        alignSelf: 'center',
-        top: '40%',
-    },
-    languageTitle: {
-        top: '20%', // Adjust this to move text up or down
-        alignSelf: 'center',
-        alignItems: 'center',
-        color: 'white',
-        zIndex: 1000,
-        fontSize: 50
-    },
-    cityTitle: {
-        alignSelf: 'center',
-        color: 'white',
-        fontSize: 50,
-        margin: 10
-    },
-    // ======== picker ========
-
-    pickerStyle: {
-        position: 'absolute',
-        width: width * 1,
-        alignSelf: 'center',
-        top: '50%',
-        fontSize: 40
-    },
-    // ======== searchbar ========
-
-    containerInput: {
-        alignItems: 'center',
-        top : '20%',
-    },
-    input: {
-        width: width * 0.6,
-        padding: 10,
-        borderRadius: 5,
-    },
-    suggestionsContainer: {
-        backgroundColor: 'white',
-        width: '100%',
-        borderRadius: 5,
-    },
-    suggestionItem: {
-        padding: 10
-    },
-
-    
-});
 
 
 // ==================== UI ====================
 
     return (
-        
             <Onboarding
             skipLabel={''}
             onDone={()=> { 
@@ -317,6 +231,91 @@ const styles = StyleSheet.create({
             />
         
     )
+    
+   
+    
+} 
+
+// ======== Stylesheet ========
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        color: "black",
+        top: '0%',
+    },
+// ======== lottie ========
+    lottie: {
+        position: 'absolute',
+        alignSelf: 'center',
+        zIndex: -1000,
+    },
+    lottie1: {
+        width: width * 0.7,
+        height: height * 0.22,
+        alignSelf: 'center',
+        top: '100%',
+    },
+    lottie2: {
+        width: width * 0.2, 
+        height: height * 0.22,
+        alignSelf: 'center',
+        top: '100%',
+    },
+    lottie3: {
+        width: width * 0.7,
+        height: height * 0.3,
+        alignSelf: 'center',
+        top: '62%',
+    },
+
+    // ======== titles ========
+    title: {
+        color: 'white',
+        alignSelf: 'center',
+        top: '40%',
+    },
+    languageTitle: {
+        top: '20%', // Adjust this to move text up or down
+        alignSelf: 'center',
+        alignItems: 'center',
+        color: 'white',
+        zIndex: 1000,
+        fontSize: 50
+    },
+    cityTitle: {
+        alignSelf: 'center',
+        color: 'white',
+        fontSize: 50,
+        margin: 10
+    },
+    // ======== picker ========
+
+    pickerStyle: {
+        position: 'absolute',
+        width: width * 1,
+        alignSelf: 'center',
+        top: '50%',
+        fontSize: 40
+    },
+    // ======== searchbar ========
+
+    containerInput: {
+        alignItems: 'center',
+        top : '20%',
+    },
+    input: {
+        width: width * 0.6,
+        padding: 10,
+        borderRadius: 5,
+    },
+    suggestionsContainer: {
+        backgroundColor: 'white',
+        width: '100%',
+        borderRadius: 5,
+    },
+    suggestionItem: {
+        padding: 10
+    },
 
     
-}
+});

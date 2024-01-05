@@ -128,14 +128,14 @@ export default function HomeScreen({navigation}) {
     
     
 
-    const calculateGrade = (temperature, humidity, windSpeed) => {
-        let grade;
-        // Calculate grade based on temperature
-        if (temperature >= 20) grade = 'A';
-        else if (temperature >= 16 && temperature < 20) grade = 'B';
-        else if (temperature >= 13 && temperature < 16) grade = 'C';
-        else if (temperature >= 9 && temperature < 13) grade = 'D';
-        else grade = 'F';
+        const calculateGrade = (temperature, humidity, windSpeed) => {
+            let grade;
+            // Calculate grade based on temperature
+            if (temperature >= 20) grade = 'A';
+            else if (temperature >= 16 && temperature < 20) grade = 'B';
+            else if (temperature >= 13 && temperature < 16) grade = 'C';
+            else if (temperature >= 9 && temperature < 13) grade = 'D';
+            else grade = 'F';
     
 
         // Function to lower the grade by one level
@@ -172,11 +172,6 @@ export default function HomeScreen({navigation}) {
         {title: selectedCity, value: grade , type: 'Grade'}
     ] : [];
 
-
-    
-
-    
-
     return (
             <SafeAreaView style={[styles.baseContainer, {backgroundColor:isMentalitybutton ? 'gold' : 'transparent'}]}>
                     {/* Reset Button */}
@@ -185,13 +180,12 @@ export default function HomeScreen({navigation}) {
                         style={styles.resetButton}><Text>{t('reset')}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                    style={styles.toggleButton}
-                    onPress={() => {
-                        setIsMentalitybutton(prevState => !prevState);
-                        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)        
-
-                    }}>
-                        <Text>{isMentalitybutton ? t('Keep Going') : t('Stop crying')}</Text>
+                        style={styles.toggleButton}
+                        onPress={() => {
+                            setIsMentalitybutton(prevState => !prevState);
+                            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
+                        }}>
+                            <Text>{isMentalitybutton ? t('Keep Going') : t('Stop crying')}</Text>
                     </TouchableOpacity>
                     <LottieView source={require('../../assets/SpinAnimation.json')} autoPlay loop style={styles.lottie} 
                         />
