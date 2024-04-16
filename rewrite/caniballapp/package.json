@@ -20,12 +20,15 @@
     "i18n-js": "^4.3.2",
     "i18next": "^23.7.13",
     "intl-pluralrules": "^2.0.1",
+    "lodash": "^4.17.21",
+    "lodash.isequal": "^4.5.0",
     "lottie-react-native": "5.1.6",
     "make-plural": "^7.3.0",
     "react": "18.2.0",
     "react-i18next": "^14.0.0",
     "react-native": "0.72.6",
     "react-native-dropdown-picker": "^5.4.7-beta.0",
+    "react-native-gesture-handler": "^2.16.0",
     "react-native-onboarding-swiper": "^1.2.0"
   },
   "devDependencies": {
